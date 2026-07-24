@@ -14,8 +14,8 @@ gmd(
     pattern: "ping",
     aliases: ["pi", "p"],
     react: "⚡",
-    category: "general",
-    description: "Check bot response speed",
+    category: "geral",
+    description: "Verificar velocidade de resposta do bot",
   },
   async (from, Gifted, conText) => {
     const {
@@ -37,15 +37,15 @@ gmd(
     const responseTime = Math.floor(elapsed[0] * 1000 + elapsed[1] / 1000000);
 
     await sendButtons(Gifted, from, {
-      title: "Bot Speed",
+      title: "Velocidade do Bot",
       text: `⚡ Pong: ${responseTime}ms`,
       footer: `> *${botFooter}*`,
       buttons: [
-        { id: `${botPrefix}uptime`, text: "⏱️ Uptime" },
+        { id: `${botPrefix}uptime`, text: "⏱️ Tempo Online" },
         {
           name: "cta_url",
           buttonParamsJson: JSON.stringify({
-            display_text: "WaChannel",
+            display_text: "Canal WhatsApp",
             url: newsletterUrl,
           }),
         },
@@ -73,8 +73,8 @@ gmd(
     pattern: "report",
     aliases: ["request"],
     react: "💫",
-    description: "Request New Features.",
-    category: "owner",
+    description: "Solicitar Novos Recursos.",
+    category: "dono",
   },
   async (from, Gifted, conText) => {
     const { mek, q, sender, react, pushName, botPrefix, isSuperUser, reply } =
@@ -82,20 +82,20 @@ gmd(
     const reportedMessages = {};
     const devlopernumber = "923493114170";
     try {
-      if (!isSuperUser) return reply("*Owner Only Command*");
+      if (!isSuperUser) return reply("*Comando Apenas para Dono*");
       if (!q)
         return reply(
-          `Example: ${botPrefix}request hi dev downloader commands are not working`,
+          `Exemplo: ${botPrefix}request Olá, os comandos de downloader estão sem funcionar`,
         );
       const messageId = mek.key.id;
       if (reportedMessages[messageId]) {
         return reply(
-          "This report has already been forwarded to the owner. Please wait for a response.",
+          "Este relatório já foi encaminhado ao dono. Aguarde uma resposta.",
         );
       }
       reportedMessages[messageId] = true;
-      const textt = `*| REQUEST/REPORT |*`;
-      const teks1 = `\n\n*User*: @${sender.split("@")[0]}\n*Request:* ${q}`;
+      const textt = `*| SOLICITAÇÃO/RELATÓRIO |*`;
+      const teks1 = `\n\n*Usuário*: @${sender.split("@")[0]}\n*Solicitação:* ${q}`;
       Gifted.sendMessage(
         devlopernumber + "@s.whatsapp.net",
         {
@@ -107,7 +107,7 @@ gmd(
         },
       );
       reply(
-        "Tʜᴀɴᴋ ʏᴏᴜ ꜰᴏʀ ʏᴏᴜʀ ʀᴇᴘᴏʀᴛ. Iᴛ ʜᴀs ʙᴇᴇɴ ꜰᴏʀᴡᴀʀᴅᴇᴅ ᴛᴏ ᴛʜᴇ ᴏᴡɴᴇʀ. Pʟᴇᴀsᴇ ᴡᴀɪᴛ ꜰᴏʀ ᴀ ʀᴇsᴘᴏɴsᴇ.",
+        "Obrigado pelo seu relatório. Ele foi encaminhado ao dono. Por favor, aguarde uma resposta.",
       );
       await react("✅");
     } catch (e) {
@@ -121,9 +121,9 @@ gmd(
   {
     pattern: "menus",
     aliases: ["mainmenu", "mainmens"],
-    description: "Display Bot's Uptime, Date, Time, and Other Stats",
+    description: "Exibir Tempo Online, Data, Hora e Outras Estatísticas do Bot",
     react: "📜",
-    category: "general",
+    category: "geral",
   },
   async (from, Gifted, conText) => {
     const {
@@ -175,27 +175,27 @@ gmd(
       ).length;
 
       let menus = `
-*🦄 Uᴘᴛɪᴍᴇ :* ${monospace(uptime)}
-*🍁 Dᴀᴛᴇ Tᴏᴅᴀʏ:* ${monospace(date)}
-*🎗 Tɪᴍᴇ Nᴏᴡ:* ${monospace(time)}
+*🦄 Tᴇᴍᴘᴏ Oɴʟɪɴᴇ :* ${monospace(uptime)}
+*🍁 Dᴀᴛᴀ Dᴇ Hᴏᴊᴇ:* ${monospace(date)}
+*🎗 Hᴏʀᴀ Aɢᴏʀᴀ:* ${monospace(time)}
 
-➮Fᴏᴜɴᴅᴇʀ - 𝐌ᴀғɪᴀ 𝐈ᴍᴀᴅ
-➮Usᴇʀ - ${monospace(pushName)}
-➮Nᴜᴍ - ${monospace(ownerNumber)} 
-➮Mᴇᴍᴏʀʏ - ${monospace(ram)}
+➮Fᴏɴᴅᴀᴅᴏʀ - 𝐌ᴀғɪᴀ 𝐈ᴍᴀᴅ
+➮Usᴜáʀɪᴏ - ${monospace(pushName)}
+➮Núᴍ - ${monospace(ownerNumber)} 
+➮Mᴇ́ᴍᴏʀɪᴀ - ${monospace(ram)}
 
-*🧑‍💻 :* ${monospace(botName)} Iꜱ Aᴠᴀɪʟᴀʙʟᴇ
+*🧑‍💻 :* ${monospace(botName)} Eѕтá Dіѕρо́νеɪ
 
-╭──❰ *ALL MENU* ❱
-│🏮 Lɪꜱᴛ
-│🏮 Cᴀᴛᴇɢᴏʀʏ
-│🏮 Hᴇʟᴘ
-│🏮 Aʟɪᴠᴇ
-│🏮 Uᴘᴛɪᴍᴇ
-│🏮 Wᴇᴀᴛʜᴇʀ
+╭──❰ *Tᴏᴅᴏs Os Mᴇɴús* ❱
+│🏮 Lɪsᴛᴀ
+│🏮 Cᴀᴛᴇɢᴏʀɪᴀ
+│🏮 Aјᴜᴅᴀ
+│🏮 Vɪᴠᴏ
+│🏮 Tᴇᴍᴘᴏ Oɴʟɪɴᴇ
+│🏮 Cʟɪᴍᴀ
 │🏮 Lɪɴᴋ
 │🏮 Cᴘᴜ
-│🏮 Rᴇᴘᴏꜱɪᴛᴏʀʏ
+│🏮 Rᴇᴘᴏsɪ́ᴛᴏʀɪᴏ
 ╰─────────────⦁`;
 
       const giftedMess = {
@@ -225,9 +225,9 @@ gmd(
   {
     pattern: "list",
     aliases: ["listmenu", "listmen"],
-    description: "Show All Commands and their Usage",
+    description: "Mostrar Todos os Comandos e Seus Usos",
     react: "📜",
-    category: "general",
+    category: "geral",
   },
   async (from, Gifted, conText) => {
     const {
@@ -279,16 +279,16 @@ gmd(
 
       let list = `
 ╭━━〔 *${monospace(botName)}* 〕━━╮
-│ ✦ *Mᴏᴅᴇ* : ${monospace(botMode)}
-│ ✦ *Pʀᴇғɪx* : [ ${monospace(botPrefix)} ]
-│ ✦ *Usᴇʀ* : ${monospace(pushName)}
+│ ✦ *Mᴏᴅᴏ* : ${monospace(botMode)}
+│ ✦ *Pʀᴇғɪxᴏ* : [ ${monospace(botPrefix)} ]
+│ ✦ *Usuáʀɪᴏ* : ${monospace(pushName)}
 │ ✦ *Pʟᴜɢɪɴs* : ${monospace(totalCommands.toString())}
-│ ✦ *Vᴇʀsɪᴏɴ* : ${monospace(botVersion)}
-│ ✦ *Uᴘᴛɪᴍᴇ* : ${monospace(uptime)}
-│ ✦ *Tɪᴍᴇ Nᴏᴡ* : ${monospace(time)}
-│ ✦ *Dᴀᴛᴇ Tᴏᴅᴀʏ* : ${monospace(date)}
-│ ✦ *Tɪᴍᴇ Zᴏɴᴇ* : ${monospace(timeZone)}
-│ ✦ *Sᴇʀᴠᴇʀ Rᴀᴍ* : ${monospace(ram)}
+│ ✦ *Vᴇʀsãᴏ* : ${monospace(botVersion)}
+│ ✦ *Tᴇᴍᴘᴏ Oɴʟɪɴᴇ* : ${monospace(uptime)}
+│ ✦ *Hᴏʀᴀ Aɢᴏʀᴀ* : ${monospace(time)}
+│ ✦ *Dᴀᴛᴀ Dᴇ Hᴏᴊᴇ* : ${monospace(date)}
+│ ✦ *Zᴏɴᴀ Dᴇ Hᴏʀáʀɪᴏ* : ${monospace(timeZone)}
+│ ✦ *RAM Dᴏ Sᴇʀᴠɪᴅᴏʀ* : ${monospace(ram)}
 ╰─────────────╯${readmore}\n`;
 
       commands.forEach((gmd, index) => {
@@ -325,8 +325,8 @@ gmd(
     pattern: "menu",
     aliases: ["help", "men", "allmenu"],
     react: "🪀",
-    category: "general",
-    description: "Fetch bot main menu",
+    category: "geral",
+    description: "Obter menu principal do bot",
   },
   async (from, Gifted, conText) => {
     const {
@@ -394,21 +394,21 @@ gmd(
         categorized[cat].sort((a, b) => a.pattern.localeCompare(b.pattern));
       }
 
-      let header = `╭══〘〘 *${monospace(botName)}* 〙〙═⊷
-┃❍ *Mᴏᴅᴇ:*  ${monospace(botMode)}
-┃❍ *Pʀᴇғɪx:*  [ ${monospace(botPrefix)} ]
-┃❍ *Usᴇʀ:*  ${monospace(pushName)}
+      let header = `╬══〘〘 *${monospace(botName)}* 〙〙═⊷
+┃❍ *Mᴏᴅᴏ:*  ${monospace(botMode)}
+┃❍ *Pʀᴇғɪxᴏ:*  [ ${monospace(botPrefix)} ]
+┃❍ *Usuáʀɪᴏ:*  ${monospace(pushName)}
 ┃❍ *Pʟᴜɢɪɴs:*  ${monospace(totalCommands.toString())}
-┃❍ *Vᴇʀsɪᴏɴ:*  ${monospace(botVersion)}
-┃❍ *Uᴘᴛɪᴍᴇ:*  ${monospace(uptime)}
-┃❍ *Tɪᴍᴇ Nᴏᴡ:*  ${monospace(time)}
-┃❍ *Dᴀᴛᴇ Tᴏᴅᴀʏ:*  ${monospace(date)}
-┃❍ *Tɪᴍᴇ Zᴏɴᴇ:*  ${monospace(timeZone)}
-┃❍ *Sᴇʀᴠᴇʀ Rᴀᴍ:*  ${monospace(ram)}
+┃❍ *Vᴇʀsãᴏ:*  ${monospace(botVersion)}
+┃❍ *Tᴇᴍᴘᴏ Oɴʟɪɴᴇ:*  ${monospace(uptime)}
+┃❍ *Hᴏʀᴀ Aɢᴏʀᴀ:*  ${monospace(time)}
+┃❍ *Dᴀᴛᴀ Dᴇ Hᴏᴊᴇ:*  ${monospace(date)}
+┃❍ *Zᴏɴᴀ Dᴇ Hᴏʀáʀɪᴏ:*  ${monospace(timeZone)}
+┃❍ *RAM Dᴏ Sᴇʀᴠɪᴅᴏʀ:*  ${monospace(ram)}
 ╰═════════════════⊷\n${readmore}\n`;
 
       const formatCategory = (category, gmds) => {
-        const title = `╭━━━━❮ *${monospace(category.toUpperCase())}* ❯━⊷ \n`;
+        const title = `╬━━━━❮ *${monospace(category.toUpperCase())}* ❯━⊷ \n`;
         const body = gmds
           .map((gmd) => {
             const prefix = gmd.isBody ? "" : botPrefix;
@@ -452,9 +452,9 @@ gmd(
     pattern: "return",
     aliases: ["details", "det", "ret"],
     react: "⚡",
-    category: "owner",
+    category: "dono",
     description:
-      "Displays the full raw quoted message using Baileys structure.",
+      "Exibe a mensagem citada completa usando a estrutura Braille.",
   },
   async (from, Gifted, conText) => {
     const {
@@ -470,11 +470,11 @@ gmd(
     } = conText;
 
     if (!isSuperUser) {
-      return reply(`Owner Only Command!`);
+      return reply(`Comando Apenas para Dono!`);
     }
 
     if (!quotedMsg) {
-      return reply(`Please reply to/quote a message`);
+      return reply(`Por favor, responda/cite uma mensagem.`);
     }
 
     try {
@@ -492,14 +492,14 @@ gmd(
             {
               name: "cta_copy",
               buttonParamsJson: JSON.stringify({
-                display_text: "Copy",
+                display_text: "Copiar",
                 copy_code: formattedMessage,
               }),
             },
             {
               name: "cta_url",
               buttonParamsJson: JSON.stringify({
-                display_text: "WaChannel",
+                display_text: "Canal WhatsApp",
                 url: newsletterUrl,
               }),
             },
@@ -525,8 +525,8 @@ gmd(
         await react("✅");
       }
     } catch (error) {
-      console.error("Error processing quoted message:", error);
-      await reply(`❌ An error occurred while processing the message.`);
+      console.error("Erro ao processar mensagem citada:", error);
+      await reply(`❌ Ocorreu um erro ao processar a mensagem.`);
     }
   },
 );
@@ -536,8 +536,8 @@ gmd(
     pattern: "uptime",
     aliases: ["up"],
     react: "⏳",
-    category: "general",
-    description: "check bot uptime status.",
+    category: "geral",
+    description: "Verificar status de tempo online do bot.",
   },
   async (from, Gifted, conText) => {
     const {
@@ -559,14 +559,14 @@ gmd(
 
     await sendButtons(Gifted, from, {
       title: "",
-      text: `⏱️ Uptime: ${days}d ${hours}h ${minutes}m ${seconds}s`,
+      text: `⏱️ Tempo Online: ${days}d ${hours}h ${minutes}m ${seconds}s`,
       footer: `> *${botFooter}*`,
       buttons: [
         { id: `${botPrefix}ping`, text: "⚡ Ping" },
         {
           name: "cta_url",
           buttonParamsJson: JSON.stringify({
-            display_text: "WaChannel",
+            display_text: "Canal WhatsApp",
             url: newsletterUrl,
           }),
         },
@@ -581,8 +581,8 @@ gmd(
     pattern: "repo",
     aliases: ["sc", "rep", "script"],
     react: "💜",
-    category: "general",
-    description: "Fetch bot script.",
+    category: "geral",
+    description: "Obter script do bot.",
   },
   async (from, Gifted, conText) => {
     const {
@@ -612,7 +612,7 @@ gmd(
       updated_at,
       owner,
     } = repoData;
-    const messageText = `Hello *_${pushName}_,*\nThis is *${botName},* A Whatsapp Bot Built by *${ownerName},* Enhanced with Amazing Features to Make Your Whatsapp Communication and Interaction Experience Amazing\n\n*❲❒❳ ɴᴀᴍᴇ:* ${name}\n*❲❒❳ sᴛᴀʀs:* ${stargazers_count}\n*❲❒❳ ғᴏʀᴋs:* ${forks_count}\n*❲❒❳ ᴄʀᴇᴀᴛᴇᴅ ᴏɴ:* ${new Date(created_at).toLocaleDateString()}\n*❲❒❳ ʟᴀsᴛ ᴜᴘᴅᴀᴛᴇᴅ:* ${new Date(updated_at).toLocaleDateString()}`;
+    const messageText = `Olá *_${pushName}_,*\nEste é o *${botName},* Um Bot WhatsApp Criado por *${ownerName},* Aprimorado com Incríveis Funcionalidades para Tornar Sua Experiência de Comunicação e Interação no WhatsApp Incrível\n\n*❲❒❳ Nᴏᴍᴇ:* ${name}\n*❲❒❳ Eѕᴛᴀʀs:* ${stargazers_count}\n*❲❒❳ Fᴏʀᴋs:* ${forks_count}\n*❲❒❳ Cʀɪᴀᴅᴏ ᴇᴍ:* ${new Date(created_at).toLocaleDateString()}\n*❲❒❳ Úʟᴛɪᴍᴀ ᴀᴄʜᴀᴅᴀ:* ${new Date(updated_at).toLocaleDateString()}`;
 
     const dateNow = Date.now();
     await sendButtons(Gifted, from, {
@@ -624,20 +624,20 @@ gmd(
         {
           name: "cta_copy",
           buttonParamsJson: JSON.stringify({
-            display_text: "Copy Link",
+            display_text: "Copiar Link",
             copy_code: `https://github.com/${giftedRepo}`,
           }),
         },
         {
           name: "cta_url",
           buttonParamsJson: JSON.stringify({
-            display_text: "Visit Repo",
+            display_text: "Visitar Repositório",
             url: `https://github.com/${giftedRepo}`,
           }),
         },
         {
           id: `repo_dl_${dateNow}`,
-          text: "📥 Download Zip",
+          text: "📥 Baixar Zip",
         },
       ],
     });
@@ -669,7 +669,7 @@ gmd(
         );
         await react("✅");
       } catch (dlErr) {
-        await Gifted.sendMessage(from, { text: "Failed to download repo zip: " + dlErr.message }, { quoted: messageData });
+        await Gifted.sendMessage(from, { text: "Falha ao baixar o zip do repositório: " + dlErr.message }, { quoted: messageData });
       }
 
       Gifted.ev.off("messages.upsert", handleResponse);
@@ -690,22 +690,22 @@ gmd(
     pattern: "save",
     aliases: ["sv", "s", "sav", "."],
     react: "⚡",
-    category: "owner",
+    category: "dono",
     description:
-      "Save messages (supports images, videos, audio, stickers, and text).",
+      "Salvar mensagens (suporta imagens, vídeos, áudio, adesivos e texto).",
   },
   async (from, Gifted, conText) => {
     const { mek, reply, react, sender, isSuperUser, getMediaBuffer } = conText;
 
     if (!isSuperUser) {
-      return reply(`❌ Owner Only Command!`);
+      return reply(`❌ Comando Apenas para Dono!`);
     }
 
     const quotedMsg =
       mek.message?.extendedTextMessage?.contextInfo?.quotedMessage;
 
     if (!quotedMsg) {
-      return reply(`⚠️ Please reply to/quote a message.`);
+      return reply(`⚠️ Por favor, responda/cite uma mensagem.`);
     }
 
     try {
@@ -742,7 +742,7 @@ gmd(
         const buffer = await getMediaBuffer(docMsg, "document");
         mediaData = {
           document: buffer,
-          fileName: docMsg.fileName || "document",
+          fileName: docMsg.fileName || "documento",
           mimetype: docMsg.mimetype || "application/octet-stream",
         };
       } else if (
@@ -770,20 +770,20 @@ gmd(
           text = quotedMsg.templateButtonReplyMessage.selectedDisplayText || "";
         }
         if (!text) {
-          return reply(`❌ Could not extract text from the quoted message.`);
+          return reply(`❌ Não foi possível extrair texto da mensagem citada.`);
         }
         mediaData = {
           text: text,
         };
       } else {
-        return reply(`❌ Unsupported message type.`);
+        return reply(`❌ Tipo de mensagem não suportado.`);
       }
 
       await Gifted.sendMessage(sender, mediaData, { quoted: mek });
       await react("✅");
     } catch (error) {
-      console.error("Save Error:", error);
-      await reply(`❌ Failed to save the message. Error: ${error.message}`);
+      console.error("Erro ao salvar:", error);
+      await reply(`❌ Falha ao salvar a mensagem. Erro: ${error.message}`);
     }
   },
 );
@@ -801,8 +801,8 @@ gmd(
       "newsletterinfo",
     ],
     react: "📢",
-    category: "general",
-    description: "Get WhatsApp Channel/Newsletter Info",
+    category: "geral",
+    description: "Obter Informações do Canal/Newsletter do WhatsApp",
   },
   async (from, Gifted, conText) => {
     const { q, reply, react, botFooter, botPrefix, GiftedTechApi, GiftedApiKey } = conText;
@@ -811,7 +811,7 @@ gmd(
     if (!input) {
       await react("❌");
       return reply(
-        `❌ Provide a channel link.\nUsage: *${botPrefix}chjid* https://whatsapp.com/channel/KEY`,
+        `❌ Forneça um link do canal.\nUso: *${botPrefix}chjid* https://whatsapp.com/channel/KEY`,
       );
     }
 
@@ -819,7 +819,7 @@ gmd(
     if (!channelMatch) {
       await react("❌");
       return reply(
-        "❌ Invalid channel link. Provide a valid WhatsApp channel link.\nExample: https://whatsapp.com/channel/ABC123",
+        "❌ Link do canal inválido. Forneça um link válido do canal do WhatsApp.\nExemplo: https://whatsapp.com/channel/ABC123",
       );
     }
 
@@ -833,14 +833,14 @@ gmd(
       if (!meta || !meta.id) {
         await react("❌");
         return reply(
-          "❌ Could not fetch channel info. The link may be invalid or the channel no longer exists.",
+          "❌ Não foi possível obter informações do canal. O link pode ser inválido ou o canal não existe mais.",
         );
       }
 
       const channelJid = meta.id;
       const tm = meta.thread_metadata || {};
 
-      const name = tm.name?.text || "Unknown Channel";
+      const name = tm.name?.text || "Canal Desconhecido";
       const rawDesc = tm.description?.text || "";
       const verification = tm.verification || "";
       const isVerified = verification === "VERIFIED";
@@ -863,7 +863,7 @@ gmd(
         const apiRes = await axios.get(apiUrl, { timeout: 10000 });
         picUrl = apiRes.data?.result?.img || null;
       } catch (apiErr) {
-        console.error("chjid pic error:", apiErr.message);
+        console.error("Erro ao buscar imagem chjid:", apiErr.message);
       }
 
       const MAX_DESC = 200;
@@ -873,18 +873,18 @@ gmd(
         if (trimmed.length > MAX_DESC) {
           const visible = trimmed.slice(0, MAX_DESC);
           const hidden = trimmed.slice(MAX_DESC);
-          descSection = `\n\n📄 *Description:*\n${visible}${readmore}${hidden}`;
+          descSection = `\n\n📄 *Descrição:*\n${visible}${readmore}${hidden}`;
         } else {
-          descSection = `\n\n📄 *Description:*\n${trimmed}`;
+          descSection = `\n\n📄 *Descrição:*\n${trimmed}`;
         }
       }
 
       const text =
-        `📢 *Channel Info*\n\n` +
-        `🔖 *Name:* ${name}\n` +
-        `🟢 *Status:* ${isActive ? "Active" : stateType || "Unknown"}\n` +
-        `${isVerified ? "✅ *Verified:* Yes\n" : "❌ *Verified:* No\n"}` +
-        `👥 *Followers:* ${followers}\n` +
+        `📢 *Informações do Canal*\n\n` +
+        `🔖 *Nome:* ${name}\n` +
+        `🟢 *Status:* ${isActive ? "Ativo" : stateType || "Desconhecido"}\n` +
+        `${isVerified ? "✅ *Verificado:* Sim\n" : "❌ *Verificado:* Não\n"}` +
+        `👥 *Seguidores:* ${followers}\n` +
         `🆔 *JID:* \`${channelJid}\`` +
         descSection;
 
@@ -892,14 +892,14 @@ gmd(
         {
           name: "cta_copy",
           buttonParamsJson: JSON.stringify({
-            display_text: "📋 Copy JID",
+            display_text: "📋 Copiar JID",
             copy_code: channelJid,
           }),
         },
         {
           name: "cta_url",
           buttonParamsJson: JSON.stringify({
-            display_text: "➕ Follow Channel",
+            display_text: "➕ Seguir Canal",
             url: channelUrl,
             merchant_url: channelUrl,
           }),
@@ -919,9 +919,9 @@ gmd(
       await sendButtons(Gifted, from, sendOpts);
       await react("✅");
     } catch (error) {
-      console.error("chjid error:", error);
+      console.error("Erro chjid:", error);
       await react("❌");
-      await reply(`❌ Error fetching channel info: ${error.message}`);
+      await reply(`❌ Erro ao buscar informações do canal: ${error.message}`);
     }
   },
 );
