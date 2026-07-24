@@ -35,7 +35,7 @@ gmd(
         category: "downloader",
         react: "📦",
         aliases: ["gitdl", "github", "git", "repodl", "clone"],
-        description: "Download GitHub repository as zip file",
+        description: "Baixar repositório GitHub como arquivo zip",
     },
     async (from, Gifted, conText) => {
         const { q, mek, reply, react, sender, botName, newsletterJid } =
@@ -44,14 +44,14 @@ gmd(
         if (!q) {
             await react("❌");
             return reply(
-                `Please provide a GitHub repository link.\n\n*Usage:* .gitclone https://github.com/user/repo`,
+                `Por favor, forneça um link de repositório GitHub.\n\n*Uso:* .gitclone https://github.com/user/repo`,
             );
         }
 
         if (!gitRepoRegex.test(q)) {
             await react("❌");
             return reply(
-                "Invalid GitHub link format. Please provide a valid GitHub repository URL.",
+                "Formato de link GitHub inválido. Por favor, forneça uma URL de repositório GitHub válida.",
             );
         }
 
@@ -62,13 +62,13 @@ gmd(
             const apiUrl = `https://api.github.com/repos/${user}/${repo}`;
             const zipUrl = `https://api.github.com/repos/${user}/${repo}/zipball`;
 
-            await reply(`Fetching repository *${user}/${repo}*...`);
+            await reply(`Buscando repositório *${user}/${repo}*...`);
 
             const repoResponse = await axios.get(apiUrl);
             if (!repoResponse.data) {
                 await react("❌");
                 return reply(
-                    "Repository not found or access denied. Make sure the repository is public.",
+                    "Repositório não encontrado ou acesso negado. Certifique-se de que o repositório é público.",
                 );
             }
 
@@ -101,13 +101,13 @@ gmd(
             await react("❌");
 
             if (error.message?.includes("404")) {
-                return reply("Repository not found.");
+                return reply("Repositório não encontrado.");
             } else if (error.message?.includes("rate limit")) {
                 return reply(
-                    "GitHub API rate limit exceeded. Please try again later.",
+                    "Limite de taxa da API GitHub excedido. Tente novamente mais tarde.",
                 );
             } else {
-                return reply(`Failed to download repository: ${error.message}`);
+                return reply(`Falha ao baixar repositório: ${error.message}`);
             }
         }
     },
@@ -119,7 +119,7 @@ gmd(
         category: "downloader",
         react: "📘",
         aliases: ["fbdl", "facebookdl", "facebook"],
-        description: "Download Facebook videos",
+        description: "Baixar vídeos do Facebook",
     },
     async (from, Gifted, conText) => {
         const {
@@ -139,12 +139,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a Facebook video URL");
+            return reply("Por favor, forneça uma URL de vídeo do Facebook");
         }
 
         if (!q.includes("facebook.com") && !q.includes("fb.watch")) {
             await react("❌");
-            return reply("Please provide a valid Facebook URL");
+            return reply("Por favor, forneça uma URL válida do Facebook");
         }
 
         try {
@@ -154,7 +154,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch video. Please check the URL and try again.",
+                    "Falha ao buscar vídeo. Por favor, verifique a URL e tente novamente.",
                 );
             }
 
@@ -165,14 +165,14 @@ gmd(
 
             const buttons = [];
             if (hd_video)
-                buttons.push({ id: `fb_hd_${dateNow}`, text: "HD Quality" });
+                buttons.push({ id: `fb_hd_${dateNow}`, text: "Qualidade HD" });
             if (sd_video)
-                buttons.push({ id: `fb_sd_${dateNow}`, text: "SD Quality" });
-            buttons.push({ id: `fb_audio_${dateNow}`, text: "Audio Only" });
+                buttons.push({ id: `fb_sd_${dateNow}`, text: "Qualidade SD" });
+            buttons.push({ id: `fb_audio_${dateNow}`, text: "Som Apenas" });
 
             await sendButtons(Gifted, from, {
-                title: `${botName} FACEBOOK DOWNLOADER`,
-                text: `*Title:* ${title || "Facebook Video"}\n*Duration:* ${duration || "Unknown"}\n\n*Select download type:*`,
+                title: `${botName} BAIXADOR FACEBOOK`,
+                text: `*Título:* ${title || "Vídeo do Facebook"}\n*Duração:* ${duration || "Desconhecido"}\n\n*Selecione o tipo de download:*`,
                 footer: botFooter,
                 image: { url: thumbnail },
                 buttons: buttons,
@@ -197,7 +197,7 @@ gmd(
                         if (!sourceVideo) {
                             await react("❌");
                             return reply(
-                                "No video available for audio extraction.",
+                                "Nenhum vídeo disponível para extração de áudio.",
                                 messageData,
                             );
                         }
@@ -206,7 +206,7 @@ gmd(
                         if (!videoBuffer || videoBuffer instanceof Error || !Buffer.isBuffer(videoBuffer)) {
                             await react("❌");
                             return reply(
-                                "Failed to download video for audio extraction. Please try again.",
+                                "Falha ao baixar vídeo para extração de áudio. Tente novamente.",
                                 messageData,
                             );
                         }
@@ -217,14 +217,14 @@ gmd(
                             await react("❌");
                             const errMsg = audioErr.message || String(audioErr);
                             if (errMsg.includes('no audio')) {
-                                return reply("This video has no audio track to extract.", messageData);
+                                return reply("Este vídeo não possui trilha de áudio para extrair.", messageData);
                             }
-                            return reply("Failed to convert video to audio: " + errMsg, messageData);
+                            return reply("Falha ao converter vídeo para áudio: " + errMsg, messageData);
                         }
                         if (!audioBuffer || !Buffer.isBuffer(audioBuffer)) {
                             await react("❌");
                             return reply(
-                                "Failed to convert video to audio. The video format may not be supported.",
+                                "Falha ao converter vídeo para áudio. O formato do vídeo pode não ser suportado.",
                                 messageData,
                             );
                         }
@@ -260,7 +260,7 @@ gmd(
                         if (!selectedVideoUrl) {
                             await react("❌");
                             return reply(
-                                "Selected quality not available.",
+                                "Qualidade selecionada não disponível.",
                                 messageData,
                             );
                         }
@@ -275,7 +275,7 @@ gmd(
                                     document: { url: selectedVideoUrl },
                                     fileName: `${(title || "facebook_video").replace(/[^\w\s.-]/gi, "")}.mp4`,
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "Facebook Video"}*`,
+                                    caption: `*${title || "Vídeo do Facebook"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -285,7 +285,7 @@ gmd(
                                 {
                                     video: { url: selectedVideoUrl },
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "Facebook Video"}*`,
+                                    caption: `*${title || "Vídeo do Facebook"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -297,7 +297,7 @@ gmd(
                     console.error("Facebook download error:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Por favor, tente novamente.",
                         messageData,
                     );
                 }
@@ -311,7 +311,7 @@ gmd(
         } catch (error) {
             console.error("Facebook API error:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Por favor, tente novamente.");
         }
     },
 );
@@ -322,7 +322,7 @@ gmd(
         category: "downloader",
         react: "🎵",
         aliases: ["tiktokdl", "ttdl", "tt"],
-        description: "Download TikTok videos",
+        description: "Baixar vídeos do TikTok",
     },
     async (from, Gifted, conText) => {
         const {
@@ -342,12 +342,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a TikTok URL");
+            return reply("Por favor, forneça uma URL do TikTok");
         }
 
         if (!q.includes("tiktok.com")) {
             await react("❌");
-            return reply("Please provide a valid TikTok URL");
+            return reply("Por favor, forneça uma URL válida do TikTok");
         }
 
         try {
@@ -366,7 +366,7 @@ gmd(
                         if (res.data?.success && res.data?.result) {
                             return res.data.result;
                         }
-                        throw new Error(`${endpoint}: no result`);
+                        throw new Error(`${endpoint}: sem resultado`);
                     });
                 })
             ).catch(() => null);
@@ -374,7 +374,7 @@ gmd(
             if (!result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch TikTok video. Please try again later.",
+                    "Falha ao buscar vídeo do TikTok. Tente novamente mais tarde.",
                 );
             }
 
@@ -382,13 +382,13 @@ gmd(
             const dateNow = Date.now();
 
             const buttons = [
-                { id: `tt_video_${dateNow}`, text: "Video" },
-                { id: `tt_audio_${dateNow}`, text: "Audio Only" },
+                { id: `tt_video_${dateNow}`, text: "Vídeo" },
+                { id: `tt_audio_${dateNow}`, text: "Som Apenas" },
             ];
 
             await sendButtons(Gifted, from, {
-                title: `${botName} TIKTOK DOWNLOADER`,
-                text: `*Title:* ${title || "TikTok Video"}\n*Author:* ${author?.name || "Unknown"}\n\n*Select download type:*`,
+                title: `${botName} BAIXADOR TIKTOK`,
+                text: `*Título:* ${title || "Vídeo do TikTok"}\n*Autor:* ${author?.name || "Desconhecido"}\n\n*Selecione o tipo de download:*`,
                 footer: botFooter,
                 image: { url: cover },
                 buttons: buttons,
@@ -419,7 +419,7 @@ gmd(
                                     document: { url: video },
                                     fileName: `${(title || "tiktok_video").replace(/[^\w\s.-]/gi, "")}.mp4`,
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "TikTok Video"}*`,
+                                    caption: `*${title || "Vídeo do TikTok"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -429,7 +429,7 @@ gmd(
                                 {
                                     video: { url: video },
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "TikTok Video"}*`,
+                                    caption: `*${title || "Vídeo do TikTok"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -474,7 +474,7 @@ gmd(
                     console.error("TikTok download error:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Por favor, tente novamente.",
                         messageData,
                     );
                 }
@@ -488,7 +488,7 @@ gmd(
         } catch (error) {
             console.error("TikTok API error:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Por favor, tente novamente.");
         }
     },
 );
@@ -499,7 +499,7 @@ gmd(
         category: "downloader",
         react: "🐦",
         aliases: ["twitterdl", "xdl", "xdownloader", "twitterdownloader", "x"],
-        description: "Download Twitter/X videos",
+        description: "Baixar vídeos do Twitter/X",
     },
     async (from, Gifted, conText) => {
         const {
@@ -519,12 +519,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a Twitter/X URL");
+            return reply("Por favor, forneça uma URL do Twitter/X");
         }
 
         if (!q.includes("twitter.com") && !q.includes("x.com")) {
             await react("❌");
-            return reply("Please provide a valid Twitter/X URL");
+            return reply("Por favor, forneça uma URL válida do Twitter/X");
         }
 
         try {
@@ -534,7 +534,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch video. Please check the URL and try again.",
+                    "Falha ao buscar vídeo. Por favor, verifique a URL e tente novamente.",
                 );
             }
 
@@ -542,19 +542,19 @@ gmd(
 
             if (!videoUrls || videoUrls.length === 0) {
                 await react("❌");
-                return reply("No video found in this tweet.");
+                return reply("Nenhum vídeo encontrado neste tweet.");
             }
 
             const dateNow = Date.now();
             const buttons = videoUrls.map((v, index) => ({
                 id: `tw_${index}_${dateNow}`,
-                text: `${v.quality} Quality`,
+                text: `Qualidade ${v.quality}`,
             }));
-            buttons.push({ id: `tw_audio_${dateNow}`, text: "Audio Only" });
+            buttons.push({ id: `tw_audio_${dateNow}`, text: "Som Apenas" });
 
             await sendButtons(Gifted, from, {
-                title: `${botName} TWITTER DOWNLOADER`,
-                text: `*Available qualities:* ${videoUrls.map((v) => v.quality).join(", ")}\n\n*Select download type:*`,
+                title: `${botName} BAIXADOR TWITTER`,
+                text: `*Qualidades disponíveis:* ${videoUrls.map((v) => v.quality).join(", ")}\n\n*Selecione o tipo de download:*`,
                 footer: botFooter,
                 image: { url: thumbnail },
                 buttons: buttons,
@@ -579,7 +579,7 @@ gmd(
                         if (!bestVideo) {
                             await react("❌");
                             return reply(
-                                "No video available for audio extraction.",
+                                "Nenhum vídeo disponível para extração de áudio.",
                                 messageData,
                             );
                         }
@@ -615,7 +615,7 @@ gmd(
                         if (!videoUrl) {
                             await react("❌");
                             return reply(
-                                "Selected quality not available.",
+                                "Qualidade selecionada não disponível.",
                                 messageData,
                             );
                         }
@@ -650,7 +650,7 @@ gmd(
                     console.error("Twitter download error:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Por favor, tente novamente.",
                         messageData,
                     );
                 }
@@ -664,7 +664,7 @@ gmd(
         } catch (error) {
             console.error("Twitter API error:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Por favor, tente novamente.");
         }
     },
 );
@@ -675,7 +675,7 @@ gmd(
         category: "downloader",
         react: "📸",
         aliases: ["insta", "instadl", "igdl", "instagram"],
-        description: "Download Instagram reels/videos",
+        description: "Baixar reels/vídeos do Instagram",
     },
     async (from, Gifted, conText) => {
         const {
@@ -695,12 +695,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide an Instagram URL");
+            return reply("Por favor, forneça uma URL do Instagram");
         }
 
         if (!q.includes("instagram.com")) {
             await react("❌");
-            return reply("Please provide a valid Instagram URL");
+            return reply("Por favor, forneça uma URL válida do Instagram");
         }
 
         try {
@@ -710,7 +710,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch content. Please check the URL and try again.",
+                    "Falha ao buscar conteúdo. Por favor, verifique a URL e tente novamente.",
                 );
             }
 
@@ -718,19 +718,19 @@ gmd(
 
             if (!download_url) {
                 await react("❌");
-                return reply("No downloadable content found.");
+                return reply("Nenhum conteúdo encontrável para download.");
             }
 
             const dateNow = Date.now();
 
             await sendButtons(Gifted, from, {
-                title: `${botName} INSTAGRAM DOWNLOADER`,
-                text: `*Select download type:*`,
+                title: `${botName} BAIXADOR INSTAGRAM`,
+                text: `*Selecione o tipo de download:*`,
                 footer: botFooter,
                 image: { url: thumbnail },
                 buttons: [
-                    { id: `ig_video_${dateNow}`, text: "Video" },
-                    { id: `ig_audio_${dateNow}`, text: "Audio Only" },
+                    { id: `ig_video_${dateNow}`, text: "Vídeo" },
+                    { id: `ig_audio_${dateNow}`, text: "Som Apenas" },
                 ],
             });
 
@@ -784,7 +784,7 @@ gmd(
                                     document: { url: download_url },
                                     fileName: "instagram_video.mp4",
                                     mimetype: "video/mp4",
-                                    caption: `*Downloaded via ${botName}*`,
+                                    caption: `*Baixado via ${botName}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -794,7 +794,7 @@ gmd(
                                 {
                                     video: { url: download_url },
                                     mimetype: "video/mp4",
-                                    caption: `*Downloaded via ${botName}*`,
+                                    caption: `*Baixado via ${botName}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -806,7 +806,7 @@ gmd(
                     console.error("Instagram download error:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Por favor, tente novamente.",
                         messageData,
                     );
                 }
@@ -820,7 +820,7 @@ gmd(
         } catch (error) {
             console.error("Instagram API error:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Por favor, tente novamente.");
         }
     },
 );
@@ -831,7 +831,7 @@ gmd(
         category: "downloader",
         react: "🍿",
         aliases: ["snackdl", "snackvideo"],
-        description: "Download Snack Video",
+        description: "Baixar Vídeo Snack",
     },
     async (from, Gifted, conText) => {
         const {
@@ -851,12 +851,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a Snack Video URL");
+            return reply("Por favor, forneça uma URL do Vídeo Snack");
         }
 
         if (!q.includes("snackvideo.com")) {
             await react("❌");
-            return reply("Please provide a valid Snack Video URL");
+            return reply("Por favor, forneça uma URL válida do Vídeo Snack");
         }
 
         try {
@@ -866,7 +866,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch video. Please check the URL and try again.",
+                    "Falha ao buscar vídeo. Por favor, verifique a URL e tente novamente.",
                 );
             }
 
@@ -875,19 +875,19 @@ gmd(
 
             if (!media) {
                 await react("❌");
-                return reply("No video found.");
+                return reply("Nenhum vídeo encontrado.");
             }
 
             const dateNow = Date.now();
 
             await sendButtons(Gifted, from, {
-                title: `${botName} SNACK VIDEO`,
-                text: `*Title:* ${title || "Snack Video"}\n*Author:* ${author || "Unknown"}\n*Likes:* ${like || "0"}\n\n*Select download type:*`,
+                title: `${botName} VÍDEO SNACK`,
+                text: `*Título:* ${title || "Vídeo Snack"}\n*Autor:* ${author || "Desconhecido"}\n*Curtidas:* ${like || "0"}\n\n*Selecione o tipo de download:*`,
                 footer: botFooter,
                 image: { url: thumbnail },
                 buttons: [
-                    { id: `sn_video_${dateNow}`, text: "Video" },
-                    { id: `sn_audio_${dateNow}`, text: "Audio Only" },
+                    { id: `sn_video_${dateNow}`, text: "Vídeo" },
+                    { id: `sn_audio_${dateNow}`, text: "Som Apenas" },
                 ],
             });
 
@@ -916,7 +916,7 @@ gmd(
                                     document: { url: media },
                                     fileName: `${(title || "snack_video").replace(/[^\w\s.-]/gi, "")}.mp4`,
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "Snack Video"}*`,
+                                    caption: `*${title || "Vídeo Snack"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -926,7 +926,7 @@ gmd(
                                 {
                                     video: { url: media },
                                     mimetype: "video/mp4",
-                                    caption: `*${title || "Snack Video"}*`,
+                                    caption: `*${title || "Vídeo Snack"}*`,
                                 },
                                 { quoted: messageData },
                             );
@@ -963,7 +963,7 @@ gmd(
                     console.error("Snack Video download error:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Por favor, tente novamente.",
                         messageData,
                     );
                 }
@@ -977,7 +977,7 @@ gmd(
         } catch (error) {
             console.error("Snack Video API error:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Por favor, tente novamente.");
         }
     },
 );
