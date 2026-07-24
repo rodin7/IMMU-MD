@@ -34,7 +34,7 @@ gmd(
         category: "downloader",
         react: "🎧",
         aliases: ["spotifydl", "spotidl", "spoti"],
-        description: "Download Spotify tracks by URL or song name",
+        description: "Baixar faixas do Spotify por URL ou nome da música",
     },
     async (from, Gifted, conText) => {
         const {
@@ -54,7 +54,7 @@ gmd(
         if (!q) {
             await react("❌");
             return reply(
-                "Please provide a Spotify URL or song name\n\n*Examples:*\n.spotify https://open.spotify.com/track/...\n.spotify The Spectre Alan Walker",
+                "Por favor, forneça uma URL do Spotify ou o nome da música\n\n*Exemplos:*\n.spotify https://open.spotify.com/track/...\n.spotify The Spectre Alan Walker",
             );
         }
 
@@ -72,7 +72,7 @@ gmd(
                         if (res.data?.success && res.data?.result?.download_url) {
                             return res.data.result;
                         }
-                        throw new Error(`${endpoint}: no download_url`);
+                        throw new Error(`${endpoint}: sem download_url`);
                     });
                 })
             ).catch(() => null);
@@ -80,7 +80,7 @@ gmd(
             if (!result || !result.download_url) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch track. Please try again.",
+                    "Falha ao buscar a faixa. Tente novamente.",
                     quotedMsg,
                 );
             }
@@ -96,7 +96,7 @@ gmd(
                     from,
                     {
                         document: formattedAudio,
-                        fileName: `${(title || "spotify_track").replace(/[^\w\s.-]/gi, "")}.mp3`,
+                        fileName: `${(title || "faixa_spotify").replace(/[^\w\s.-]/gi, "")}.mp3`,
                         mimetype: "audio/mpeg",
                     },
                     { quoted: quotedMsg },
@@ -130,7 +130,7 @@ gmd(
             if (!data?.success || !data?.results) {
                 await react("❌");
                 return reply(
-                    "Search failed. Please try with a direct Spotify URL.",
+                    "Busca falhou. Por favor, tente com uma URL direta do Spotify.",
                 );
             }
 
@@ -139,7 +139,7 @@ gmd(
             if (results?.status === false) {
                 await react("❌");
                 return reply(
-                    "Search service temporarily unavailable. Please try with a direct Spotify URL.",
+                    "Serviço de busca temporariamente indisponível. Tente com uma URL direta do Spotify.",
                 );
             }
 
@@ -158,13 +158,13 @@ gmd(
             if (tracks.length === 0) {
                 await react("❌");
                 return reply(
-                    "No Spotify tracks found. Try a different query or provide a direct Spotify URL.",
+                    "Nenhuma faixa do Spotify encontrada. Tente uma consulta diferente ou forneça uma URL direta do Spotify.",
                 );
             }
 
             const dateNow = Date.now();
             const buttons = tracks.map((track, index) => {
-                const title = track.title || track.name || "Unknown Track";
+                const title = track.title || track.name || "Faixa Desconhecida";
                 const artist = track.artist || track.artists?.join(", ") || "";
                 const displayName = artist ? `${title} - ${artist}` : title;
                 return {
@@ -175,9 +175,9 @@ gmd(
 
             const trackList = tracks
                 .map((track, i) => {
-                    const title = track.title || track.name || "Unknown";
+                    const title = track.title || track.name || "Desconhecido";
                     const artist =
-                        track.artist || track.artists?.join(", ") || "Unknown";
+                        track.artist || track.artists?.join(", ") || "Desconhecido";
                     return `${i + 1}. ${title} - ${artist}`;
                 })
                 .join("\n");
@@ -187,7 +187,7 @@ gmd(
 
             await sendButtons(Gifted, from, {
                 title: `${botName} SPOTIFY`,
-                text: `*Search Results:*\n\n${trackList}\n\n*Select a track:*`,
+                text: `*Resultados da Busca:*\n\n${trackList}\n\n*Selecione uma faixa:*`,
                 footer: botFooter,
                 image: { url: thumbnailUrl },
                 buttons: buttons,
@@ -217,15 +217,15 @@ gmd(
 
                     if (!trackUrl) {
                         await react("❌");
-                        return reply("Track URL not available.", messageData);
+                        return reply("URL da faixa não disponível.", messageData);
                     }
 
                     await downloadAndSend(trackUrl, messageData);
                 } catch (error) {
-                    console.error("Spotify download error:", error);
+                    console.error("Erro no download do Spotify:", error);
                     await react("❌");
                     await reply(
-                        "Failed to download. Please try again.",
+                        "Falha no download. Tente novamente.",
                         messageData,
                     );
                 }
@@ -237,9 +237,9 @@ gmd(
                 300000,
             );
         } catch (error) {
-            console.error("Spotify API error:", error);
+            console.error("Erro na API do Spotify:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Tente novamente.");
         }
     },
 );
@@ -250,7 +250,7 @@ gmd(
         category: "downloader",
         react: "📁",
         aliases: ["googledrive", "drive", "gdrivedl"],
-        description: "Download from Google Drive",
+        description: "Baixar do Google Drive",
     },
     async (from, Gifted, conText) => {
         const {
@@ -270,12 +270,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a Google Drive URL");
+            return reply("Por favor, forneça uma URL do Google Drive");
         }
 
         if (!q.includes("drive.google.com")) {
             await react("❌");
-            return reply("Please provide a valid Google Drive URL");
+            return reply("Por favor, forneça uma URL válida do Google Drive");
         }
 
         try {
@@ -285,7 +285,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch file. Please check the URL and ensure the file is publicly accessible.",
+                    "Falha ao buscar o arquivo. Verifique a URL e certifique-se de que o arquivo é publicamente acessível.",
                 );
             }
 
@@ -293,7 +293,7 @@ gmd(
 
             if (!download_url) {
                 await react("❌");
-                return reply("No download URL available.");
+                return reply("Nenhuma URL de download disponível.");
             }
 
             let mimetype = getMimeFromUrl(name || "");
@@ -312,7 +312,7 @@ gmd(
                 if (headErr.response?.status === 404) {
                     await react("❌");
                     return reply(
-                        "File not found. The file may have been deleted or is not publicly accessible.",
+                        "Arquivo não encontrado. O arquivo pode ter sido excluído ou não é publicamente acessível.",
                     );
                 }
             }
@@ -327,7 +327,7 @@ gmd(
                 ) {
                     await react("❌");
                     return reply(
-                        "File not found. The file may have been deleted or is not publicly accessible.",
+                        "Arquivo não encontrado. O arquivo pode ter sido excluído ou não é publicamente acessível.",
                     );
                 }
                 throw dlErr;
@@ -355,7 +355,7 @@ gmd(
                     {
                         video: formattedVideo,
                         mimetype: "video/mp4",
-                        caption: `*${name || "Google Drive File"}*`,
+                        caption: `*${name || "Arquivo do Google Drive"}*`,
                     },
                     { quoted: mek },
                 );
@@ -364,7 +364,7 @@ gmd(
                     from,
                     {
                         image: fileBuffer,
-                        caption: `*${name || "Google Drive File"}*`,
+                        caption: `*${name || "Arquivo do Google Drive"}*`,
                     },
                     { quoted: mek },
                 );
@@ -373,7 +373,7 @@ gmd(
                     from,
                     {
                         document: fileBuffer,
-                        fileName: name || "gdrive_file",
+                        fileName: name || "arquivo_gdrive",
                         mimetype: mimetype || "application/octet-stream",
                     },
                     { quoted: mek },
@@ -382,17 +382,17 @@ gmd(
 
             await react("✅");
         } catch (error) {
-            console.error("Google Drive API error:", error);
+            console.error("Erro na API do Google Drive:", error);
             await react("❌");
             if (
                 error.response?.status === 404 ||
                 error.message?.includes("404")
             ) {
                 return reply(
-                    "File not found. The file may have been deleted or is not publicly accessible.",
+                    "Arquivo não encontrado. O arquivo pode ter sido excluído ou não é publicamente acessível.",
                 );
             }
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Tente novamente.");
         }
     },
 );
@@ -403,7 +403,7 @@ gmd(
         category: "downloader",
         react: "🔥",
         aliases: ["mfire", "mediafiredl", "mfiredl"],
-        description: "Download from MediaFire",
+        description: "Baixar do MediaFire",
     },
     async (from, Gifted, conText) => {
         const {
@@ -422,12 +422,12 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a MediaFire URL");
+            return reply("Por favor, forneça uma URL do MediaFire");
         }
 
         if (!q.includes("mediafire.com")) {
             await react("❌");
-            return reply("Please provide a valid MediaFire URL");
+            return reply("Por favor, forneça uma URL válida do MediaFire");
         }
 
         try {
@@ -437,7 +437,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch file. Please check the URL and try again.",
+                    "Falha ao buscar o arquivo. Verifique a URL e tente novamente.",
                 );
             }
 
@@ -446,7 +446,7 @@ gmd(
 
             if (!downloadUrl) {
                 await react("❌");
-                return reply("No download URL available.");
+                return reply("Nenhuma URL de download disponível.");
             }
 
             const mimetype = mimeType || getMimeFromUrl(downloadUrl);
@@ -466,9 +466,9 @@ gmd(
                 sizeBytes > MAX_MEDIA_SIZE || mimeCategory === "document";
 
             const caption =
-                `*${fileName || "MediaFire File"}*\n\n` +
-                `*Size:* ${fileSize || "Unknown"}\n` +
-                `*Type:* ${fileType || "Unknown"}`;
+                `*${fileName || "Arquivo MediaFire"}*\n\n` +
+                `*Tamanho:* ${fileSize || "Desconhecido"}\n` +
+                `*Tipo:* ${fileType || "Desconhecido"}`;
 
             if (mimeCategory === "audio" && !sendAsDoc) {
                 const audioBuffer = await gmdBuffer(downloadUrl);
@@ -506,7 +506,7 @@ gmd(
                     from,
                     {
                         document: { url: downloadUrl },
-                        fileName: fileName || "mediafire_file",
+                        fileName: fileName || "arquivo_mediafire",
                         mimetype: mimetype,
                         caption: caption,
                     },
@@ -516,9 +516,9 @@ gmd(
 
             await react("✅");
         } catch (error) {
-            console.error("MediaFire API error:", error);
+            console.error("Erro na API do MediaFire:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Tente novamente.");
         }
     },
 );
@@ -529,7 +529,7 @@ gmd(
         category: "downloader",
         react: "📱",
         aliases: ["app", "apkdl", "appdownload"],
-        description: "Download Android APK files",
+        description: "Baixar arquivos APK do Android",
     },
     async (from, Gifted, conText) => {
         const {
@@ -547,19 +547,19 @@ gmd(
         if (!q) {
             await react("❌");
             return reply(
-                "Please provide an app name\n\n*Example:* .apk WhatsApp",
+                "Por favor, forneça o nome do aplicativo\n\n*Exemplo:* .apk WhatsApp",
             );
         }
 
         try {
-         //   await reply(`Searching for *${q}* APK...`);
+         //   await reply(`Buscando APK para *${q}*...`);
 
             const apiUrl = `${GiftedTechApi}/api/download/apkdl?apikey=${GiftedApiKey}&appName=${encodeURIComponent(q)}`;
             const response = await axios.get(apiUrl, { timeout: 60000 });
 
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
-                return reply("App not found. Please try a different name.");
+                return reply("Aplicativo não encontrado. Tente um nome diferente.");
             }
 
             const { appname, appicon, developer, mimetype, download_url } =
@@ -567,14 +567,14 @@ gmd(
 
             if (!download_url) {
                 await react("❌");
-                return reply("No download URL available for this app.");
+                return reply("Nenhuma URL de download disponível para este aplicativo.");
             }
 
             const caption =
-                `*${botName} APK DOWNLOADER*\n\n` +
+                `*BAIXADOR DE APKS DO ${botName}*\n\n` +
                 `*App:* ${appname || q}\n` +
-                `*Developer:* ${developer || "Unknown"}\n\n` +
-                `_Downloading APK..._`;
+                `*Desenvolvedor:* ${developer || "Desconhecido"}\n\n` +
+                `_Baixando APK..._`;
 
             await Gifted.sendMessage(
                 from,
@@ -598,9 +598,9 @@ gmd(
 
             await react("✅");
         } catch (error) {
-            console.error("APK download error:", error);
+            console.error("Erro no download do APK:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Tente novamente.");
         }
     },
 );
@@ -611,7 +611,7 @@ gmd(
         category: "downloader",
         react: "📋",
         aliases: ["getpaste", "getpastebin", "pastedl", "pastebindl", "paste"],
-        description: "Fetch content from Pastebin",
+        description: "Buscar conteúdo do Pastebin",
     },
     async (from, Gifted, conText) => {
         const {
@@ -628,17 +628,17 @@ gmd(
         if (!q) {
             await react("❌");
             return reply(
-                "Please provide a Pastebin URL\n\n*Example:* .pastebin https://pastebin.com/xxxxxx",
+                "Por favor, forneça uma URL do Pastebin\n\n*Exemplo:* .pastebin https://pastebin.com/xxxxxx",
             );
         }
 
         if (!q.includes("pastebin.com")) {
             await react("❌");
-            return reply("Please provide a valid Pastebin URL");
+            return reply("Por favor, forneça uma URL válida do Pastebin");
         }
 
         try {
-            await reply("Fetching paste content...");
+            await reply("Buscando conteúdo do paste...");
 
             const apiUrl = `${GiftedTechApi}/api/download/pastebin?apikey=${GiftedApiKey}&url=${encodeURIComponent(q)}`;
             const response = await axios.get(apiUrl, { timeout: 30000 });
@@ -646,7 +646,7 @@ gmd(
             if (!response.data?.success || !response.data?.result) {
                 await react("❌");
                 return reply(
-                    "Failed to fetch paste. Please check the URL and try again.",
+                    "Falha ao buscar o paste. Verifique a URL e tente novamente.",
                 );
             }
 
@@ -661,8 +661,8 @@ gmd(
             const pasteId = q.split("/").pop().split("?")[0];
 
             const header =
-                `*${botName} PASTEBIN VIEWER*\n` +
-                `*Paste ID:* ${pasteId}\n` +
+                `*VISOR DE PASTEBIN DO ${botName}*\n` +
+                `*ID do Paste:* ${pasteId}\n` +
                 `━━━━━━━━━━━━━━━━━━━━\n\n`;
 
             const fullMessage = header + content;
@@ -675,7 +675,7 @@ gmd(
                         document: textBuffer,
                         fileName: `pastebin_${pasteId}.txt`,
                         mimetype: "text/plain",
-                        caption: `*Paste ID:* ${pasteId}\n_Content too long, sent as file_`,
+                        caption: `*ID do Paste:* ${pasteId}\n_Content muito longo, enviado como arquivo_`,
                     },
                     { quoted: mek },
                 );
@@ -691,9 +691,9 @@ gmd(
 
             await react("✅");
         } catch (error) {
-            console.error("Pastebin API error:", error);
+            console.error("Erro na API do Pastebin:", error);
             await react("❌");
-            return reply("An error occurred. Please try again.");
+            return reply("Ocorreu um erro. Tente novamente.");
         }
     },
 );
@@ -704,7 +704,7 @@ gmd(
         pattern: "ytv",
         category: "downloader",
         react: "📽",
-        description: "Download Video from Youtube",
+        description: "Baixar vídeo do YouTube",
     },
     async (from, Gifted, conText) => {
         const {
@@ -727,7 +727,7 @@ gmd(
 
         if (!q) {
             await react("❌");
-            return reply("Please provide a YouTube URL");
+            return reply("Por favor, forneça uma URL do YouTube");
         }
 
         if (
@@ -735,7 +735,7 @@ gmd(
             !q.startsWith("https://www.youtube.com/") &&
             !q.startsWith("https://youtube.com/")
         ) {
-            return reply("Please provide a valid YouTube URL!");
+            return reply("Por favor, forneça uma URL válida do YouTube!");
         }
 
         try {
@@ -746,16 +746,16 @@ gmd(
             const infoMessage = {
                 image: { url: videoInfo.thumbnail || botPic },
                 caption:
-                    `> *${botName} VIDEO DOWNLOADER*\n\n` +
-                    `*Title:* ${videoInfo.title}\n` +
-                    `*Duration:* ${videoInfo.timestamp}\n` +
-                    `*Views:* ${videoInfo.views}\n` +
-                    `*Uploaded:* ${videoInfo.ago}\n` +
-                    `*Artist:* ${videoInfo.author.name}\n\n` +
-                    `*Reply With:*\n` +
-                    `1 - Download 360p\n` +
-                    `2 - Download 720p\n` +
-                    `3 - Download 1080p`,
+                    `> *BAIXADOR DE VÍDEOS DO ${botName}*\n\n` +
+                    `*Título:* ${videoInfo.title}\n` +
+                    `*Duração:* ${videoInfo.timestamp}\n` +
+                    `*Visualizações:* ${videoInfo.views}\n` +
+                    `*Publicado em:* ${videoInfo.ago}\n` +
+                    `*Artista:* ${videoInfo.author.name}\n\n` +
+                    `*Responda Com:*\n` +
+                    `1 - Baixar 360p\n` +
+                    `2 - Baixar 720p\n` +
+                    `3 - Baixar 1080p`,
                 contextInfo: {
                     mentionedJid: [sender],
                     forwardingScore: 5,
@@ -800,7 +800,7 @@ gmd(
                             break;
                         default:
                             return reply(
-                                "Invalid option. Please reply with: 1, 2 or 3",
+                                "Opção inválida. Por favor, responda com: 1, 2 ou 3",
                                 messageData,
                             );
                     }
@@ -812,7 +812,7 @@ gmd(
                     if (videoBuffer instanceof Error) {
                         await react("❌");
                         return reply(
-                            "Failed to download the video.",
+                            "Falha ao baixar o vídeo.",
                             messageData,
                         );
                     }
@@ -845,10 +845,10 @@ gmd(
                     await react("✅");
                     Gifted.ev.off("messages.upsert", handleResponse);
                 } catch (error) {
-                    console.error("Error processing video:", error);
+                    console.error("Erro ao processar vídeo:", error);
                     await react("❌");
                     await reply(
-                        "Failed to process video. Please try again.",
+                        "Falha ao processar o vídeo. Tente novamente.",
                         messageData,
                     );
                     Gifted.ev.off("messages.upsert", handleResponse);
@@ -861,10 +861,10 @@ gmd(
                 Gifted.ev.off("messages.upsert", handleResponse);
             }, 300000);
         } catch (error) {
-            console.error("YouTube download error:", error);
+            console.error("Erro no download do YouTube:", error);
             await react("❌");
             return reply(
-                "An error occurred while processing your request. Please try again.",
+                "Ocorreu um erro ao processar sua solicitação. Tente novamente.",
             );
         }
     },
