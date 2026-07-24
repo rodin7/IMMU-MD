@@ -72,44 +72,44 @@ gmd({
     aliases: ["game", "playgame", "playgames", "gamelist"],
     react: "🎮",
     category: "game",
-    description: "Show all available games and commands",
+    description: "Mostrar todos os jogos e comandos disponíveis",
 }, async (from, Gifted, conText) => {
-    const helpText = `🎮 *GAMES MENU*
+    const helpText = `🎮 *MENU DE JOGOS*
 
 ╭━━━━━━━━━━━━━━━━━╮
-│ ❌⭕ *TIC TAC TOE*
+│ ❌⭕ *TIC TAC TOE (Jogo da Velha)*
 ├━━━━━━━━━━━━━━━━━┤
-│ .ttt - Start game (vs player)
-│ .tttai - Play vs AI 🤖
-│ .tttend - End current game
-│ _Type *join* to join a game_
-│ _Type *1-9* to make a move_
+│ .ttt - Iniciar jogo (vs jogador)
+│ .tttai - Jogar contra IA 🤖
+│ .tttend - Encerrar jogo atual
+│ _Digite *join* para entrar em um jogo_
+│ _Digite *1-9* para fazer uma jogada_
 ╰━━━━━━━━━━━━━━━━━╯
 
 ╭━━━━━━━━━━━━━━━━━╮
-│ 🔤 *WORD CHAIN GAME*
+│ 🔤 *JOGO DA CADEIA DE PALAVRAS*
 ├━━━━━━━━━━━━━━━━━┤
-│ .wcg - Start game (multiplayer)
-│ .wcgai - Play vs AI 🤖
-│ .wcgbegin - Start the game (host)
-│ .wcgend - End current game
-│ .wcgscores - View scores
-│ _Type *join* to join a game_
-│ _Just type your word!_
+│ .wcg - Iniciar jogo (multijogador)
+│ .wcgai - Jogar contra IA 🤖
+│ .wcgbegin - Iniciar o jogo (anfitrião)
+│ .wcgend - Encerrar jogo atual
+│ .wcgscores - Ver pontuações
+│ _Digite *join* para entrar em um jogo_
+│ _Apenas digite sua palavra!_
 ╰━━━━━━━━━━━━━━━━━╯
 
 ╭━━━━━━━━━━━━━━━━━╮
-│ 🎲 *DICE GAME*
+│ 🎲 *JOGO DE DADOS*
 ├━━━━━━━━━━━━━━━━━┤
-│ .dice [rounds] - Start game
-│ .diceai [rounds] - Play vs AI 🤖
-│ .diceend - End current game
-│ _Type *join* to join a game_
-│ _Type *roll* to roll the dice_
+│ .dice [rodadas] - Iniciar jogo
+│ .diceai [rodadas] - Jogar contra IA 🤖
+│ .diceend - Encerrar jogo atual
+│ _Digite *join* para entrar em um jogo_
+│ _Digite *roll* para rolar os dados_
 ╰━━━━━━━━━━━━━━━━━╯
 
-_🤖 AI modes let you play solo against the bot!_
-_No command prefix needed during gameplay!_`;
+_Modos de IA permitem jogar sozinho contra o bot!_
+_Nenhum prefixo de comando necessário durante a jogada!_`;
     
     return await Gifted.sendMessage(from, {
         text: helpText,
@@ -123,7 +123,7 @@ const setJoinTimeout = (chatJid, Gifted, player1) => {
         if (waiting) {
             await endGame(chatJid);
             await Gifted.sendMessage(chatJid, {
-                text: `⏰ *TIC TAC TOE - TIMEOUT*\n\nNo one joined within 30 seconds.\nGame cancelled!\n\n@${getPlayerName(player1)} can start a new game with *.ttt*`,
+                text: `⏰ *TIC TAC TOE - TEMPO ESGOTADO*\n\nNinguém entrou em 30 segundos.\nJogo cancelado!\n\n@${getPlayerName(player1)} pode iniciar um novo jogo com *.ttt*`,
     
                 mentions: [player1],
             });
@@ -138,14 +138,14 @@ gmd({
     aliases: ["ttt", "tttstart"],
     react: "🎮",
     category: "game",
-    description: "Start a TicTacToe game. Another player must type 'join' within 30 seconds.",
+    description: "Iniciar um jogo de TicTacToe. Outro jogador deve digitar 'join' dentro de 30 segundos.",
 }, async (from, Gifted, conText) => {
     const { mek, sender, botName } = conText;
     
     const existingActive = await getActiveGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active game in this chat!\nUse *.tttend* to end it first.",
+            text: "❌ Já há um jogo ativo neste chat!\nUse *.tttend* para encerrar primeiro.",
 
         });
     }
@@ -153,13 +153,13 @@ gmd({
     const existingWaiting = await getWaitingGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already a game waiting for a player!\nType *join* to join, or use *.tttend* to cancel.",
+            text: "❌ Já há um jogo aguardando um jogador!\nDigite *join* para entrar, ou use *.tttend* para cancelar.",
 
         });
     }
     
     const sentMsg = await Gifted.sendMessage(from, {
-        text: `🎮 *TIC TAC TOE*\n\n@${getPlayerName(sender)} wants to play!\n\n*Type "join" within 30 seconds to play!*\n\nPlayer 1: @${getPlayerName(sender)} (❌)\nPlayer 2: Waiting...\n\n${renderBoard([1, 2, 3, 4, 5, 6, 7, 8, 9])}\n\n⏰ _Auto-cancels in 30 seconds if no one joins_`,
+        text: `🎮 *TIC TAC TOE*\n\n@${getPlayerName(sender)} quer jogar!\n\n*Digite "join" dentro de 30 segundos para participar!*\n\nJogador 1: @${getPlayerName(sender)} (❌)\nJogador 2: Aguardando...\n\n${renderBoard([1, 2, 3, 4, 5, 6, 7, 8, 9])}\n\n⏰ _Cancela automaticamente em 30 segundos se ninguém entrar_`,
         mentions: [sender],
     });
     
@@ -172,7 +172,7 @@ gmd({
     aliases: ["endttt", "tttcancel", "ttstop", "tictactoestop", "tictactoeend", "stopttt", "cancelttt"],
     react: "🛑",
     category: "game",
-    description: "End the current TicTacToe game",
+    description: "Encerrar o jogo atual de TicTacToe",
 }, async (from, Gifted, conText) => {
     const { sender, isSuperUser } = conText;
     
@@ -182,21 +182,21 @@ gmd({
     
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No active TicTacToe game to end!",
+            text: "❌ Não há jogo de TicTacToe para encerrar!",
         });
     }
     
     const isPlayer = game.player1 === sender || game.player2 === sender;
     if (!isPlayer && !isSuperUser) {
         return await Gifted.sendMessage(from, {
-            text: "❌ Only players or admins can end the game!",
+            text: "❌ Apenas jogadores ou administradores podem encerrar o jogo!",
         });
     }
     
     clearGameTimeout(from);
     await endGame(from);
     await Gifted.sendMessage(from, {
-        text: `🛑 TicTacToe game ended by @${getPlayerName(sender)}!`,
+        text: `🛑 Jogo de TicTacToe encerrado por @${getPlayerName(sender)}!`,
         mentions: [sender],
     });
 });
@@ -206,7 +206,7 @@ gmd({
     aliases: ["jointtt"],
     react: "✅",
     category: "game",
-    description: "Join a waiting TicTacToe game",
+    description: "Entrar em um jogo de TicTacToe aguardando",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
@@ -214,14 +214,14 @@ gmd({
     
     if (!result) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No game waiting for players! Start one with *.ttt*",
+            text: "❌ Nenhum jogo aguardando jogadores! Inicie um com *.ttt*",
 
         });
     }
     
     if (result.error === "same_player") {
         return await Gifted.sendMessage(from, {
-            text: "❌ You can't play against yourself!",
+            text: "❌ Você não pode jogar contra si mesmo!",
 
         });
     }
@@ -230,7 +230,7 @@ gmd({
     
     const board = JSON.parse(result.board);
     await Gifted.sendMessage(from, {
-        text: `🎮 *TIC TAC TOE - GAME STARTED!*\n\nPlayer 1: @${getPlayerName(result.player1)} (❌)\nPlayer 2: @${getPlayerName(result.player2)} (⭕)\n\n${renderBoard(board)}\n\n@${getPlayerName(result.currentTurn)}'s turn (❌)\n\n*Reply with a number (1-9) to move!*\n⏰ _30 seconds per move_`,
+        text: `🎮 *TIC TAC TOE - JOGO INICIADO!*\n\nJogador 1: @${getPlayerName(result.player1)} (❌)\nJogador 2: @${getPlayerName(result.player2)} (⭕)\n\n${renderBoard(board)}\n\nVez de @${getPlayerName(result.currentTurn)} (❌)\n\n*Responda com um número (1-9) para mover!*\n⏰ _30 segundos por jogada_`,
         mentions: [result.player1, result.player2, result.currentTurn],
     });
     
@@ -242,13 +242,13 @@ gmd({
     aliases: ["board", "tttshow"],
     react: "📋",
     category: "game",
-    description: "Show the current TicTacToe board",
+    description: "Mostrar o tabuleiro atual do TicTacToe",
 }, async (from, Gifted, conText) => {
     const game = await getActiveGame(from);
     
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No active game! Start one with *.ttt*",
+            text: "❌ Nenhum jogo ativo! Inicie um com *.ttt*",
 
         });
     }
@@ -257,7 +257,7 @@ gmd({
     const currentSymbol = game.currentTurn === game.player1 ? "❌" : "⭕";
     
     await Gifted.sendMessage(from, {
-        text: `🎮 *TIC TAC TOE*\n\nPlayer 1: @${getPlayerName(game.player1)} (❌)\nPlayer 2: @${getPlayerName(game.player2)} (⭕)\n\n${renderBoard(board)}\n\n@${getPlayerName(game.currentTurn)}'s turn (${currentSymbol})`,
+        text: `🎮 *TIC TAC TOE*\n\nJogador 1: @${getPlayerName(game.player1)} (❌)\nJogador 2: @${getPlayerName(game.player2)} (⭕)\n\n${renderBoard(board)}\n\nVez de @${getPlayerName(game.currentTurn)} (${currentSymbol})`,
         mentions: [game.player1, game.player2, game.currentTurn],
     });
 });
@@ -267,14 +267,14 @@ gmd({
     aliases: ["wordchain", "wcgstart", "wordgame"],
     react: "🔤",
     category: "game",
-    description: "Start a Word Chain Game",
+    description: "Iniciar um Jogo da Cadeia de Palavras",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
     const existingActive = await getActiveWcgGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active Word Chain game!\nUse *.wcgend* to end it first.",
+            text: "❌ Já há um jogo de Cadeia de Palavras ativo!\nUse *.wcgend* para encerrar primeiro.",
 
         });
     }
@@ -282,7 +282,7 @@ gmd({
     const existingWaiting = await getWaitingWcgGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ A game is waiting for players!\nUse *.wcgjoin* to join or *.wcgend* to cancel.",
+            text: "❌ Um jogo está aguardando jogadores!\nUse *.wcgjoin* para entrar ou *.wcgend* para cancelar.",
 
         });
     }
@@ -290,7 +290,7 @@ gmd({
     await createWcgGame(from, sender);
     
     await Gifted.sendMessage(from, {
-        text: `🔤 *WORD CHAIN GAME*\n\n@${getPlayerName(sender)} wants to play!\n\n📜 *Rules:*\n• Each word must start with the last letter of the previous word\n• No repeating words\n• Minimum 2 letters per word\n• 30 seconds per turn\n\n👥 *Players:*\n1. @${getPlayerName(sender)}\n\n⏰ *30 seconds to join!*\n*Type .wcgjoin to join!*\n*Host types .wcgbegin to start early*`,
+        text: `🔤 *JOGO DA CADEIA DE PALAVRAS*\n\n@${getPlayerName(sender)} quer jogar!\n\n📜 *Regras:*\n• Cada palavra deve começar com a última letra da palavra anterior\n• Sem repetir palavras\n• Mínimo de 2 letras por palavra\n• 30 segundos por vez\n\n👥 *Jogadores:*\n1. @${getPlayerName(sender)}\n\n⏰ *30 segundos para entrar!*\n*Digite .wcgjoin para entrar!*\n*O anfitrião digita .wcgbegin para iniciar antes*`,
         mentions: [sender],
     });
     
@@ -302,7 +302,7 @@ gmd({
         if (players.length < 2) {
             await endWcgGame(from);
             await Gifted.sendMessage(from, {
-                text: "⏰ *Time's up!*\n\nNo one joined the game. Game cancelled.",
+                text: "⏰ *Fim do tempo!*\n\nNinguém entrou no jogo. Jogo cancelado.",
             });
             return;
         }
@@ -313,7 +313,7 @@ gmd({
         const playerList = result.players.map((p, i) => `${i + 1}. @${getPlayerName(p)}`).join('\n');
         
         await Gifted.sendMessage(from, {
-            text: `⏰ *Time's up! Game starting!*\n\n🚀 *WORD CHAIN STARTED!*\n\n👥 *Players:*\n${playerList}\n\n🔄 @${getPlayerName(result.currentTurn)}'s turn!\n*Say any word to begin!*\n\n⏰ _30 seconds per turn_`,
+            text: `⏰ *Fim do tempo! Iniciando jogo!*\n\n🚀 *CADEIA DE PALAVRAS INICIADA!*\n\n👥 *Jogadores:*\n${playerList}\n\n🔄 Vez de @${getPlayerName(result.currentTurn)}!\n*Diga qualquer palavra para começar!*\n\n⏰ _30 segundos por vez_`,
             mentions: [...result.players, result.currentTurn],
         });
         
@@ -326,7 +326,7 @@ gmd({
     aliases: ["joinwcg", "joinwordchain"],
     react: "✅",
     category: "game",
-    description: "Join a Word Chain Game",
+    description: "Entrar em um Jogo da Cadeia de Palavras",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
@@ -334,19 +334,19 @@ gmd({
     
     if (result.error === 'no_game') {
         return await Gifted.sendMessage(from, {
-            text: "❌ No game waiting! Start one with *.wcg*",
+            text: "❌ Nenhum jogo aguardando! Inicie um com *.wcg*",
         });
     }
     
     if (result.error === 'cant_join_own_game') {
         return await Gifted.sendMessage(from, {
-            text: "❌ You can't play against yourself! Wait for someone else to join.",
+            text: "❌ Você não pode jogar contra si mesmo! Aguarde alguém else entrar.",
         });
     }
     
     if (result.error === 'already_joined') {
         return await Gifted.sendMessage(from, {
-            text: "❌ You've already joined this game!",
+            text: "❌ Você já entrou neste jogo!",
         });
     }
     
@@ -354,7 +354,7 @@ gmd({
     const mentions = result.players;
     
     await Gifted.sendMessage(from, {
-        text: `✅ @${getPlayerName(sender)} joined!\n\n👥 *Players (${result.players.length}):*\n${playerList}\n\n*More can join with .wcgjoin*\n*Host types .wcgbegin when ready*`,
+        text: `✅ @${getPlayerName(sender)} entrou!\n\n👥 *Jogadores (${result.players.length}):*\n${playerList}\n\n*Mais podem entrar com .wcgjoin*\n*O anfitrião digita .wcgbegin quando estiver pronto*`,
         mentions,
     });
 });
@@ -364,14 +364,14 @@ gmd({
     aliases: ["startwcg", "wcggo"],
     react: "🚀",
     category: "game",
-    description: "Start the Word Chain Game (host only)",
+    description: "Iniciar o Jogo da Cadeia de Palavras (apenas anfitrião)",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
     const waitingGame = await getWaitingWcgGame(from);
     if (!waitingGame) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No game waiting to start!",
+            text: "❌ Nenhum jogo aguardando para iniciar!",
 
         });
     }
@@ -379,7 +379,7 @@ gmd({
     const players = JSON.parse(waitingGame.players);
     if (players[0] !== sender) {
         return await Gifted.sendMessage(from, {
-            text: "❌ Only the host can start the game!",
+            text: "❌ Apenas o anfitrião pode iniciar o jogo!",
 
         });
     }
@@ -390,7 +390,7 @@ gmd({
     
     if (result.error === 'not_enough_players') {
         return await Gifted.sendMessage(from, {
-            text: "❌ Need at least 2 players to start!",
+            text: "❌ São necessários pelo menos 2 jogadores para iniciar!",
 
         });
     }
@@ -398,7 +398,7 @@ gmd({
     const playerList = result.players.map((p, i) => `${i + 1}. @${getPlayerName(p)}`).join('\n');
     
     await Gifted.sendMessage(from, {
-        text: `🚀 *WORD CHAIN STARTED!*\n\n👥 *Players:*\n${playerList}\n\n🔄 @${getPlayerName(result.currentTurn)}'s turn!\n*Say any word to begin!*\n\n⏰ _30 seconds per turn_`,
+        text: `🚀 *CADEIA DE PALAVRAS INICIADA!*\n\n👥 *Jogadores:*\n${playerList}\n\n🔄 Vez de @${getPlayerName(result.currentTurn)}!\n*Diga qualquer palavra para começar!*\n\n⏰ _30 segundos por vez_`,
         mentions: [...result.players, result.currentTurn],
     });
     
@@ -410,7 +410,7 @@ gmd({
     aliases: ["endwcg", "wcgstop", "stopwcg", "wcgcancel"],
     react: "🛑",
     category: "game",
-    description: "End the Word Chain Game",
+    description: "Encerrar o Jogo da Cadeia de Palavras",
 }, async (from, Gifted, conText) => {
     const { sender, isSuperUser } = conText;
     
@@ -418,7 +418,7 @@ gmd({
     
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No Word Chain game to end!",
+            text: "❌ Nenhum jogo de Cadeia de Palavras para encerrar!",
         });
     }
     
@@ -426,7 +426,7 @@ gmd({
     const isPlayer = players.includes(sender);
     if (!isPlayer && !isSuperUser) {
         return await Gifted.sendMessage(from, {
-            text: "❌ Only players or admins can end the game!",
+            text: "❌ Apenas jogadores ou administradores podem encerrar o jogo!",
         });
     }
     
@@ -434,9 +434,9 @@ gmd({
     clearWcgJoinTimeout(from);
     const scores = await endWcgGame(from);
     
-    let text = `🛑 Word Chain ended by @${getPlayerName(sender)}!`;
+    let text = `🛑 Cadeia de Palavras encerrada por @${getPlayerName(sender)}!`;
     if (scores && Object.keys(scores).length > 0) {
-        text += `\n\n📊 *Final Scores:*\n${formatScores(scores)}`;
+        text += `\n\n📊 *Pontuações Finais:*\n${formatScores(scores)}`;
     }
     
     await Gifted.sendMessage(from, {
@@ -450,13 +450,13 @@ gmd({
     aliases: ["wcgscore", "wordchainscore"],
     react: "📊",
     category: "game",
-    description: "Show Word Chain scores",
+    description: "Mostrar pontuações da Cadeia de Palavras",
 }, async (from, Gifted, conText) => {
     const game = await getActiveWcgGame(from);
     
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No active Word Chain game!",
+            text: "❌ Nenhum jogo de Cadeia de Palavras ativo!",
 
         });
     }
@@ -466,7 +466,7 @@ gmd({
     const usedWords = JSON.parse(game.usedWords);
     
     await Gifted.sendMessage(from, {
-        text: `📊 *WORD CHAIN SCORES*\n\n${formatScores(scores)}\n\n📝 Words used: ${usedWords.length}\n🔄 Current turn: @${getPlayerName(game.currentTurn)}\n${game.lastWord ? `Last word: *${game.lastWord}*` : ''}`,
+        text: `📊 *PONTUAÇÕES DA CADEIA DE PALAVRAS*\n\n${formatScores(scores)}\n\n📝 Palavras usadas: ${usedWords.length}\n🔄 Vez atual: @${getPlayerName(game.currentTurn)}\n${game.lastWord ? `Última palavra: *${game.lastWord}*` : ''}`,
         mentions: [...players, game.currentTurn],
     });
 });
@@ -476,7 +476,7 @@ gmd({
     aliases: ["word", "wcgword", "say"],
     react: "🔤",
     category: "game",
-    description: "Submit a word in Word Chain Game",
+    description: "Enviar uma palavra no Jogo da Cadeia de Palavras",
 }, async (from, Gifted, conText) => {
     const { sender, q, botPrefix } = conText;
     
@@ -487,7 +487,7 @@ gmd({
     
     if (!q || q.trim() === '') {
         return await Gifted.sendMessage(from, {
-            text: `❌ Provide a word!\n\nUsage: ${botPrefix}w <word>`,
+            text: `❌ Forneça uma palavra!\n\nUso: ${botPrefix}w <palavra>`,
 
         });
     }
@@ -497,28 +497,28 @@ gmd({
     
     if (result.error === 'not_your_turn') {
         return await Gifted.sendMessage(from, {
-            text: "❌ It's not your turn!",
+            text: "❌ Não é a sua vez!",
 
         });
     }
     
     if (result.error === 'word_used') {
         return await Gifted.sendMessage(from, {
-            text: `❌ "${word}" has already been used!`,
+            text: `❌ "${word}" já foi usada!`,
 
         });
     }
     
     if (result.error === 'wrong_letter') {
         return await Gifted.sendMessage(from, {
-            text: `❌ Word must start with *${result.expected.toUpperCase()}*!`,
+            text: `❌ A palavra deve começar com *${result.expected.toUpperCase()}*!`,
 
         });
     }
     
     if (result.error === 'too_short') {
         return await Gifted.sendMessage(from, {
-            text: "❌ Word must be at least 2 letters!",
+            text: "❌ A palavra deve ter pelo menos 2 letras!",
 
         });
     }
@@ -530,7 +530,7 @@ gmd({
     const updatedGame = await getActiveWcgGame(from);
     if (updatedGame && updatedGame.isAiGame && result.nextPlayer === BOT_JID) {
         await Gifted.sendMessage(from, {
-            text: `✅ *${result.word}* (+${result.word.length} pts)\n\n🤖 AI is thinking...`,
+            text: `✅ *${result.word}* (+${result.word.length} pts)\n\n🤖 IA está pensando...`,
 
         });
         await handleAiWcgMoveInternal(from, Gifted, updatedGame);
@@ -538,7 +538,7 @@ gmd({
     }
     
     await Gifted.sendMessage(from, {
-        text: `✅ *${result.word}* (+${result.word.length} pts)\n\n🔄 @${getPlayerName(result.nextPlayer)}'s turn\nNext word starts with: *${nextLetter}*\n\n📊 Words: ${result.wordCount} | ⏰ 30s`,
+        text: `✅ *${result.word}* (+${result.word.length} pts)\n\n🔄 Vez de @${getPlayerName(result.nextPlayer)}\nPróxima palavra começa com: *${nextLetter}*\n\n📊 Palavras: ${result.wordCount} | ⏰ 30s`,
         mentions: [result.nextPlayer],
     });
     
@@ -557,7 +557,7 @@ async function handleAiWcgMoveInternal(from, Gifted, game) {
         const scores = JSON.parse(game.scores);
         await endWcgGame(from);
         await Gifted.sendMessage(from, {
-            text: `🎉 *YOU WIN!*\n\n🤖 AI couldn't find a word starting with *${lastWord.slice(-1).toUpperCase()}*!\n\n📊 *Final Scores:*\n${formatScores(scores)}`,
+            text: `🎉 *VOCÊ VENCEU!*\n\n🤖 IA não encontrou uma palavra começando com *${lastWord.slice(-1).toUpperCase()}*!\n\n📊 *Pontuações Finais:*\n${formatScores(scores)}`,
 
         });
         return;
@@ -569,7 +569,7 @@ async function handleAiWcgMoveInternal(from, Gifted, game) {
         const scores = JSON.parse(game.scores);
         await endWcgGame(from);
         await Gifted.sendMessage(from, {
-            text: `🎉 *YOU WIN!*\n\n🤖 AI made an error!\n\n📊 *Final Scores:*\n${formatScores(scores)}`,
+            text: `🎉 *VOCÊ VENCEU!*\n\n🤖 IA cometeu um erro!\n\n📊 *Pontuações Finais:*\n${formatScores(scores)}`,
 
         });
         return;
@@ -577,7 +577,7 @@ async function handleAiWcgMoveInternal(from, Gifted, game) {
     
     const nextLetter = result.word.slice(-1).toUpperCase();
     await Gifted.sendMessage(from, {
-        text: `🤖 AI says: *${result.word}* (+${result.word.length} pts)\n\n🔄 @${getPlayerName(result.nextPlayer)}'s turn\nNext word starts with: *${nextLetter}*\n\n📊 Words: ${result.wordCount} | ⏰ 30s`,
+        text: `🤖 IA diz: *${result.word}* (+${result.word.length} pts)\n\n🔄 Vez de @${getPlayerName(result.nextPlayer)}\nPróxima palavra começa com: *${nextLetter}*\n\n📊 Palavras: ${result.wordCount} | ⏰ 30s`,
         mentions: [result.nextPlayer],
     });
     
@@ -589,14 +589,14 @@ gmd({
     aliases: ["dicestart", "dicegame", "rolldice"],
     react: "🎲",
     category: "game",
-    description: "Start a Dice Game",
+    description: "Iniciar um Jogo de Dados",
 }, async (from, Gifted, conText) => {
     const { sender, q } = conText;
     
     const existingActive = await getActiveDiceGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active Dice game!\nUse *.diceend* to end it first.",
+            text: "❌ Já há um jogo de Dados ativo!\nUse *.diceend* para encerrar primeiro.",
 
         });
     }
@@ -604,7 +604,7 @@ gmd({
     const existingWaiting = await getWaitingDiceGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ A game is waiting for an opponent!\nUse *.dicejoin* to join or *.diceend* to cancel.",
+            text: "❌ Um jogo está aguardando um oponente!\nUse *.dicejoin* para entrar ou *.diceend* para cancelar.",
 
         });
     }
@@ -613,7 +613,7 @@ gmd({
     await createDiceGame(from, sender, rounds);
     
     await Gifted.sendMessage(from, {
-        text: `🎲 *DICE GAME*\n\n@${getPlayerName(sender)} wants to play!\n\n📜 *Rules:*\n• ${rounds} rounds\n• Each player rolls once per round\n• Highest roll wins the round\n• Most rounds won = winner!\n\n*Type .dicejoin to play!*\n⏰ _30 seconds to join_`,
+        text: `🎲 *JOGO DE DADOS*\n\n@${getPlayerName(sender)} quer jogar!\n\n📜 *Regras:*\n• ${rounds} rodadas\n• Cada jogador rola uma vez por rodada\n• Quem tirar o maior valor ganha a rodada\n• Quem ganhar mais rodadas é o vencedor!\n\n*Digite .dicejoin para jogar!*\n⏰ _30 segundos para entrar_`,
         mentions: [sender],
     });
     
@@ -622,7 +622,7 @@ gmd({
         if (waiting) {
             await endDiceGame(from);
             await Gifted.sendMessage(from, {
-                text: `⏰ *DICE GAME - TIMEOUT*\n\nNo one joined within 30 seconds.\nGame cancelled!`,
+                text: `⏰ *JOGO DE DADOS - TEMPO ESGOTADO*\n\nNinguém entrou em 30 segundos.\nJogo cancelado!`,
     
             });
         }
@@ -635,7 +635,7 @@ gmd({
     aliases: ["joindice"],
     react: "✅",
     category: "game",
-    description: "Join a Dice Game",
+    description: "Entrar em um Jogo de Dados",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
@@ -648,20 +648,20 @@ gmd({
     
     if (result.error === 'no_game') {
         return await Gifted.sendMessage(from, {
-            text: "❌ No game waiting! Start one with *.dice*",
+            text: "❌ Nenhum jogo aguardando! Inicie um com *.dice*",
 
         });
     }
     
     if (result.error === 'same_player') {
         return await Gifted.sendMessage(from, {
-            text: "❌ You can't play against yourself!",
+            text: "❌ Você não pode jogar contra si mesmo!",
 
         });
     }
     
     await Gifted.sendMessage(from, {
-        text: `🎲 *DICE GAME STARTED!*\n\n👤 @${getPlayerName(result.player1)} vs @${getPlayerName(result.player2)}\n🎯 Best of ${result.rounds} rounds\n\n*Round 1*\n@${getPlayerName(result.player1)}, type *.roll* to roll!\n\n⏰ _30 seconds per turn_`,
+        text: `🎲 *JOGO DE DADOS INICIADO!*\n\n👤 @${getPlayerName(result.player1)} vs @${getPlayerName(result.player2)}\n🎯 Melhor de ${result.rounds} rodadas\n\n*Rodada 1*\n@${getPlayerName(result.player1)}, digite *.roll* para rolar!\n\n⏰ _30 segundos por vez_`,
         mentions: [result.player1, result.player2],
     });
     
@@ -673,14 +673,14 @@ gmd({
     aliases: ["diceroll", "throwdice"],
     react: "🎲",
     category: "game",
-    description: "Roll the dice in an active game",
+    description: "Rolar os dados em um jogo ativo",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
     const game = await getActiveDiceGame(from);
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No active Dice game! Start one with *.dice*",
+            text: "❌ Nenhum jogo de Dados ativo! Inicie um com *.dice*",
 
         });
     }
@@ -690,34 +690,34 @@ gmd({
     
     if (result.error === 'not_your_turn') {
         return await Gifted.sendMessage(from, {
-            text: "❌ It's not your turn!",
+            text: "❌ Não é a sua vez!",
 
         });
     }
     
     if (result.roundComplete || result.gameFinished) {
-        let text = `🎲 *Round ${result.currentRound} Results*\n\n`;
+        let text = `🎲 *Resultados da Rodada ${result.currentRound}*\n\n`;
         text += `${getDiceEmoji(result.player1Roll)} @${getPlayerName(result.player1)}: ${result.player1Roll}\n`;
         text += `${getDiceEmoji(result.player2Roll)} @${getPlayerName(result.player2)}: ${result.player2Roll}\n\n`;
         
         if (result.roundWinner) {
-            text += `🏆 @${getPlayerName(result.roundWinner)} wins this round!\n`;
+            text += `🏆 @${getPlayerName(result.roundWinner)} venceu esta rodada!\n`;
         } else {
-            text += `🤝 It's a tie!\n`;
+            text += `🤝 Empate!\n`;
         }
         
-        text += `\n📊 *Score:* ${result.player1Score} - ${result.player2Score}`;
+        text += `\n📊 *Placar:* ${result.player1Score} - ${result.player2Score}`;
         
         if (result.gameFinished) {
-            text += `\n\n🎮 *GAME OVER!*\n`;
+            text += `\n\n🎮 *FIM DE JOGO!*\n`;
             if (result.gameWinner) {
-                text += `🏆 *WINNER:* @${getPlayerName(result.gameWinner)}!`;
+                text += `🏆 *VENCEDOR:* @${getPlayerName(result.gameWinner)}!`;
             } else {
-                text += `🤝 *It's a tie!*`;
+                text += `🤝 *Empate!*`;
             }
             await endDiceGame(from);
         } else {
-            text += `\n\n*Round ${result.nextRound}*\n@${getPlayerName(result.player1)}, type *.roll*!`;
+            text += `\n\n*Rodada ${result.nextRound}*\n@${getPlayerName(result.player1)}, digite *.roll*!`;
             setDiceTurnTimeout(from, Gifted, result.player1, game);
         }
         
@@ -729,7 +729,7 @@ gmd({
         if (game.isAiGame && result.waitingFor === BOT_JID) {
             clearDiceTimeout(from);
             await Gifted.sendMessage(from, {
-                text: `🎲 @${getPlayerName(sender)} rolled: ${getDiceEmoji(result.roll)} *${result.roll}*\n\n🤖 AI is rolling...`,
+                text: `🎲 @${getPlayerName(sender)} rolou: ${getDiceEmoji(result.roll)} *${result.roll}*\n\n🤖 IA está rolando...`,
                 mentions: [sender],
             });
             
@@ -739,36 +739,36 @@ gmd({
             
             if (aiResult.error) {
                 await Gifted.sendMessage(from, {
-                    text: `❌ AI roll error. Game ended.`,
+                    text: `❌ Erro na jogada da IA. Jogo encerrado.`,
                 });
                 await endDiceGame(from);
                 return;
             }
             
-            let text = `🎲 *Round ${aiResult.currentRound} Results*\n\n`;
+            let text = `🎲 *Resultados da Rodada ${aiResult.currentRound}*\n\n`;
             text += `${getDiceEmoji(aiResult.player1Roll)} @${getPlayerName(aiResult.player1)}: ${aiResult.player1Roll}\n`;
-            text += `${getDiceEmoji(aiResult.player2Roll)} 🤖 AI: ${aiResult.player2Roll}\n\n`;
+            text += `${getDiceEmoji(aiResult.player2Roll)} 🤖 IA: ${aiResult.player2Roll}\n\n`;
             
             if (aiResult.roundWinner) {
-                const winnerName = aiResult.roundWinner === BOT_JID ? '🤖 AI' : `@${getPlayerName(aiResult.roundWinner)}`;
-                text += `🏆 ${winnerName} wins this round!\n`;
+                const winnerName = aiResult.roundWinner === BOT_JID ? '🤖 IA' : `@${getPlayerName(aiResult.roundWinner)}`;
+                text += `🏆 ${winnerName} venceu esta rodada!\n`;
             } else {
-                text += `🤝 It's a tie!\n`;
+                text += `🤝 Empate!\n`;
             }
             
-            text += `\n📊 *Score:* ${aiResult.player1Score} - ${aiResult.player2Score}`;
+            text += `\n📊 *Placar:* ${aiResult.player1Score} - ${aiResult.player2Score}`;
             
             if (aiResult.gameFinished) {
-                text += `\n\n🎮 *GAME OVER!*\n`;
+                text += `\n\n🎮 *FIM DE JOGO!*\n`;
                 if (aiResult.gameWinner) {
-                    const winnerName = aiResult.gameWinner === BOT_JID ? '🤖 AI wins!' : `🏆 @${getPlayerName(aiResult.gameWinner)} wins!`;
+                    const winnerName = aiResult.gameWinner === BOT_JID ? '🤖 IA venceu!' : `🏆 @${getPlayerName(aiResult.gameWinner)} venceu!`;
                     text += winnerName;
                 } else {
-                    text += `🤝 *It's a tie!*`;
+                    text += `🤝 *Empate!*`;
                 }
                 await endDiceGame(from);
             } else {
-                text += `\n\n*Round ${aiResult.nextRound}*\n@${getPlayerName(aiResult.player1)}, type *.roll*!`;
+                text += `\n\n*Rodada ${aiResult.nextRound}*\n@${getPlayerName(aiResult.player1)}, digite *.roll*!`;
                 const freshGame = await getActiveDiceGame(from);
                 setDiceTurnTimeout(from, Gifted, aiResult.player1, freshGame);
             }
@@ -781,7 +781,7 @@ gmd({
         }
         
         await Gifted.sendMessage(from, {
-            text: `🎲 @${getPlayerName(sender)} rolled: ${getDiceEmoji(result.roll)} *${result.roll}*\n\n@${getPlayerName(result.waitingFor)}, type *.roll*!`,
+            text: `🎲 @${getPlayerName(sender)} rolou: ${getDiceEmoji(result.roll)} *${result.roll}*\n\n@${getPlayerName(result.waitingFor)}, digite *.roll*!`,
             mentions: [sender, result.waitingFor],
         });
         setDiceTurnTimeout(from, Gifted, result.waitingFor, game);
@@ -793,7 +793,7 @@ gmd({
     aliases: ["enddice", "dicestop", "stopdice", "dicecancel"],
     react: "🛑",
     category: "game",
-    description: "End the Dice Game",
+    description: "Encerrar o Jogo de Dados",
 }, async (from, Gifted, conText) => {
     const { sender, isSuperUser } = conText;
     
@@ -801,14 +801,14 @@ gmd({
     
     if (!game) {
         return await Gifted.sendMessage(from, {
-            text: "❌ No Dice game to end!",
+            text: "❌ Nenhum jogo de Dados para encerrar!",
         });
     }
     
     const isPlayer = game.player1 === sender || game.player2 === sender;
     if (!isPlayer && !isSuperUser) {
         return await Gifted.sendMessage(from, {
-            text: "❌ Only players or admins can end the game!",
+            text: "❌ Apenas jogadores ou administradores podem encerrar o jogo!",
         });
     }
     
@@ -820,7 +820,7 @@ gmd({
     await endDiceGame(from);
     
     await Gifted.sendMessage(from, {
-        text: `🛑 Dice game ended by @${getPlayerName(sender)}!`,
+        text: `🛑 Jogo de Dados encerrado por @${getPlayerName(sender)}!`,
         mentions: [sender],
     });
 });
@@ -830,14 +830,14 @@ gmd({
     aliases: ["tttbot", "tictactoeai", "aitt"],
     react: "🤖",
     category: "game",
-    description: "Play TicTacToe against AI",
+    description: "Jogar TicTacToe contra a IA",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
     const existingActive = await getActiveGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active game in this chat!\nUse *.tttend* to end it first.",
+            text: "❌ Já há um jogo ativo neste chat!\nUse *.tttend* para encerrar primeiro.",
 
         });
     }
@@ -845,13 +845,13 @@ gmd({
     const existingWaiting = await getWaitingGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already a game waiting!\nUse *.tttend* to cancel.",
+            text: "❌ Já há um jogo aguardando!\nUse *.tttend* para cancelar.",
 
         });
     }
     
     const sentMsg = await Gifted.sendMessage(from, {
-        text: `🤖 *TIC TAC TOE vs AI*\n\nPlayer: @${getPlayerName(sender)} (❌)\nAI: 🤖 (⭕)\n\n${renderBoard([1, 2, 3, 4, 5, 6, 7, 8, 9])}\n\n@${getPlayerName(sender)}'s turn (❌)\n*Reply with a number (1-9) to move!*`,
+        text: `🤖 *TIC TAC TOE vs IA*\n\nJogador: @${getPlayerName(sender)} (❌)\nIA: 🤖 (⭕)\n\n${renderBoard([1, 2, 3, 4, 5, 6, 7, 8, 9])}\n\nVez de @${getPlayerName(sender)} (❌)\n*Responda com um número (1-9) para mover!*`,
         mentions: [sender],
     });
     
@@ -863,14 +863,14 @@ gmd({
     aliases: ["wcgbot", "wordchainai", "aiwcg"],
     react: "🤖",
     category: "game",
-    description: "Play Word Chain Game against AI",
+    description: "Jogar Cadeia de Palavras contra a IA",
 }, async (from, Gifted, conText) => {
     const { sender } = conText;
     
     const existingActive = await getActiveWcgGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active Word Chain game!\nUse *.wcgend* to end it first.",
+            text: "❌ Já há um jogo de Cadeia de Palavras ativo!\nUse *.wcgend* para encerrar primeiro.",
 
         });
     }
@@ -878,7 +878,7 @@ gmd({
     const existingWaiting = await getWaitingWcgGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ A game is waiting for players!\nUse *.wcgend* to cancel.",
+            text: "❌ Um jogo está aguardando jogadores!\nUse *.wcgend* para cancelar.",
 
         });
     }
@@ -902,7 +902,7 @@ gmd({
     });
     
     await Gifted.sendMessage(from, {
-        text: `🤖 *WORD CHAIN vs AI*\n\n📜 *Rules:*\n• Each word must start with the last letter of the previous word\n• No repeating words\n• Minimum 2 letters per word\n• 30 seconds per turn\n\n👤 @${getPlayerName(sender)} vs 🤖 AI\n\n@${getPlayerName(sender)}'s turn - say any word to start!\n\n⏰ _30 seconds per turn_`,
+        text: `🤖 *CADEIA DE PALAVRAS vs IA*\n\n📜 *Regras:*\n• Cada palavra deve começar com a última letra da palavra anterior\n• Sem repetir palavras\n• Mínimo de 2 letras por palavra\n• 30 segundos por vez\n\n👤 @${getPlayerName(sender)} vs 🤖 IA\n\nVez de @${getPlayerName(sender)} - diga qualquer palavra para começar!\n\n⏰ _30 segundos por vez_`,
         mentions: [sender],
     });
     
@@ -914,14 +914,14 @@ gmd({
     aliases: ["dicebot", "aidice", "rolldiceai"],
     react: "🤖",
     category: "game",
-    description: "Play Dice against AI",
+    description: "Jogar Dados contra a IA",
 }, async (from, Gifted, conText) => {
     const { sender, q } = conText;
     
     const existingActive = await getActiveDiceGame(from);
     if (existingActive) {
         return await Gifted.sendMessage(from, {
-            text: "❌ There's already an active Dice game!\nUse *.diceend* to end it first.",
+            text: "❌ Já há um jogo de Dados ativo!\nUse *.diceend* para encerrar primeiro.",
 
         });
     }
@@ -929,7 +929,7 @@ gmd({
     const existingWaiting = await getWaitingDiceGame(from);
     if (existingWaiting) {
         return await Gifted.sendMessage(from, {
-            text: "❌ A game is waiting!\nUse *.diceend* to cancel.",
+            text: "❌ Um jogo está aguardando!\nUse *.diceend* para cancelar.",
 
         });
     }
@@ -954,7 +954,7 @@ gmd({
     });
     
     await Gifted.sendMessage(from, {
-        text: `🤖 *DICE GAME vs AI*\n\n👤 @${getPlayerName(sender)} vs 🤖 AI\n🎯 Best of ${rounds} rounds\n\n*Round 1*\n@${getPlayerName(sender)}, type *.roll* to roll!\n\n⏰ _30 seconds per turn_`,
+        text: `🤖 *JOGO DE DADOS vs IA*\n\n👤 @${getPlayerName(sender)} vs 🤖 IA\n🎯 Melhor de ${rounds} rodadas\n\n*Rodada 1*\n@${getPlayerName(sender)}, digite *.roll* para rolar!\n\n⏰ _30 segundos por vez_`,
         mentions: [sender],
     });
     
