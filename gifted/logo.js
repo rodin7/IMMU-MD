@@ -5,169 +5,169 @@ const logoEndpoints = [
   {
     pattern: "glossysilver",
     aliases: ["glossy", "silverlogo"],
-    description: "Glossy Silver logo",
+    description: "Logotipo Prateado Brilhante",
     endpoint: "glossysilver",
   },
   {
     pattern: "writetext",
     aliases: ["textwrite", "baby", "writtentext"],
-    description: "Write Text logo",
+    description: "Texto Escrito",
     endpoint: "writetext",
   },
   {
     pattern: "blackpinklogo",
     aliases: ["bplogo", "pinkblack"],
-    description: "Black Pink Logo",
+    description: "Logo Black Pink",
     endpoint: "blackpinklogo",
   },
   {
     pattern: "glitchtext",
     aliases: ["glitch", "textglitch"],
-    description: "Glitch Text logo",
+    description: "Texto Glitch",
     endpoint: "glitchtext",
   },
   {
     pattern: "advancedglow",
     aliases: ["advglow", "glowadvanced"],
-    description: "Advanced Glow logo",
+    description: "Brilho Avançado",
     endpoint: "advancedglow",
   },
   {
     pattern: "typographytext",
     aliases: ["typography", "typo"],
-    description: "Typography Text logo",
+    description: "Texto Tipográfico",
     endpoint: "typographytext",
   },
   {
     pattern: "pixelglitch",
     aliases: ["pixelg", "glitchpixel"],
-    description: "Pixel Glitch logo",
+    description: "Glitch Pixelado",
     endpoint: "pixelglitch",
   },
   {
     pattern: "neonglitch",
     aliases: ["neong", "glitchneon"],
-    description: "Neon Glitch logo",
+    description: "Glitch Neon",
     endpoint: "neonglitch",
   },
   {
     pattern: "nigerianflag",
     aliases: ["ngflag", "nigeria"],
-    description: "Nigerian Flag logo",
+    description: "Bandeira da Nigéria",
     endpoint: "nigerianflag",
   },
   {
     pattern: "americanflag",
     aliases: ["usflag", "usaflag", "america"],
-    description: "American Flag logo",
+    description: "Bandeira Americana",
     endpoint: "americanflag",
   },
   {
     pattern: "deletingtext",
     aliases: ["deltext", "textdelete"],
-    description: "Deleting Text logo",
+    description: "Texto Apagando",
     endpoint: "deletingtext",
   },
   {
     pattern: "blackpinkstyle",
     aliases: ["bpstyle", "pinkblackstyle"],
-    description: "Blackpink Style logo",
+    description: "Estilo Blackpink",
     endpoint: "blackpinkstyle",
   },
   {
     pattern: "glowingtext",
     aliases: ["glowtxt", "textglow"],
-    description: "Glowing Text logo",
+    description: "Texto Brilhante",
     endpoint: "glowingtext",
   },
   {
     pattern: "underwater",
     aliases: ["underw", "waterlogo"],
-    description: "Under Water logo",
+    description: "Submerso na Água",
     endpoint: "underwater",
   },
   {
     pattern: "logomaker",
     aliases: ["makelogo", "logomake"],
-    description: "Logo Maker",
+    description: "Criador de Logos",
     endpoint: "logomaker",
   },
   {
     pattern: "cartoonstyle",
     aliases: ["cartoon", "toonlogo"],
-    description: "Cartoon Style logo",
+    description: "Estilo Desenho Animado",
     endpoint: "cartoonstyle",
   },
   {
     pattern: "papercut",
     aliases: ["cutpaper", "papercutlogo"],
-    description: "Paper Cut logo",
+    description: "Recorte de Papel",
     endpoint: "papercut",
   },
   {
     pattern: "effectclouds",
     aliases: ["cloudeffect", "clouds"],
-    description: "Effect Clouds logo",
+    description: "Efeito Nuvens",
     endpoint: "effectclouds",
   },
   {
     pattern: "gradienttext",
     aliases: ["gradient", "textgradient"],
-    description: "Gradient Text logo",
+    description: "Texto Degradê",
     endpoint: "gradienttext",
   },
   {
     pattern: "summerbeach",
     aliases: ["beachsummer", "beach"],
-    description: "Summer Beach logo",
+    description: "Praia de Verão",
     endpoint: "summerbeach",
   },
   {
     pattern: "sandsummer",
     aliases: ["summersand", "sand", "sandlogo"],
-    description: "Sand Summer logo",
+    description: "Areia de Verão",
     endpoint: "sandsummer",
   },
   {
     pattern: "luxurygold",
     aliases: ["goldluxury", "luxgold"],
-    description: "Luxury Gold logo",
+    description: "Ouro de Luxo",
     endpoint: "luxurygold",
   },
   {
     pattern: "galaxy",
     aliases: ["galaxylogo", "space"],
-    description: "Galaxy logo",
+    description: "Galáxia",
     endpoint: "galaxy",
   },
   {
     pattern: "logo1917",
     aliases: ["1917", "1917logo"],
-    description: "1917 Style logo",
+    description: "Estilo 1917",
     endpoint: "1917",
   },
   {
     pattern: "makingneon",
     aliases: ["neonmake", "neonlogo"],
-    description: "Making Neon logo",
+    description: "Neon Criativo",
     endpoint: "makingneon",
   },
   {
     pattern: "texteffect",
     aliases: ["effecttext", "fxtext"],
-    description: "Text Effect logo",
+    description: "Efeito de Texto",
     endpoint: "texteffect",
   },
   {
     pattern: "galaxystyle",
     aliases: ["stylegalaxy", "galstyle"],
-    description: "Galaxy Style logo",
+    description: "Estilo Galáxia",
     endpoint: "galaxystyle",
   },
   {
     pattern: "lighteffect",
     aliases: ["effectlight", "lightlogo"],
-    description: "Light Effect logo",
+    description: "Efeito de Luz",
     endpoint: "lighteffect",
   },
 ];
@@ -179,7 +179,7 @@ async function createLogoCommand(config) {
       aliases: config.aliases,
       category: "logo",
       react: "🎨",
-      description: `Create ${config.description}`,
+      description: `Criar ${config.description}`,
     },
     async (from, Gifted, conText) => {
       const {
@@ -196,7 +196,7 @@ async function createLogoCommand(config) {
       if (!q) {
         await react("❌");
         return reply(
-          `Please provide text for the logo.\n\nUsage: .${config.pattern} <text>\nExample: .${config.pattern} ${pushname || "Immu Tech"}`,
+          `Por favor, forneça um texto para o logotipo.\n\nUso: .${config.pattern} <texto>\nExemplo: .${config.pattern} ${pushname || "Immu Tech"}`,
         );
       }
 
@@ -208,7 +208,7 @@ async function createLogoCommand(config) {
 
         if (!res.data || !res.data.success || !res.data.result?.image_url) {
           await react("❌");
-          return reply("Failed to generate logo. Please try again.");
+          return reply("Falha ao gerar o logotipo. Tente novamente.");
         }
 
         const imageUrl = res.data.result.image_url;
@@ -216,23 +216,23 @@ async function createLogoCommand(config) {
 
         if (!imageBuffer || !Buffer.isBuffer(imageBuffer)) {
           await react("❌");
-          return reply("Failed to download the generated logo.");
+          return reply("Falha ao baixar o logotipo gerado.");
         }
 
         await Gifted.sendMessage(
           from,
           {
             image: imageBuffer,
-            caption: `✨ *${config.description}*\n\n📝 *Text:* ${q}\n\n> ${botCaption}`,
+            caption: `✨ *${config.description}*\n\n📝 *Texto:* ${q}\n\n> ${botCaption}`,
           },
           { quoted: mek },
         );
 
         await react("✅");
       } catch (e) {
-        console.error(`Error in ${config.pattern} command:`, e.message);
+        console.error(`Erro no comando ${config.pattern}:`, e.message);
         await react("❌");
-        await reply("Failed to generate logo. Please try again later.");
+        await reply("Falha ao gerar o logotipo. Tente novamente mais tarde.");
       }
     },
   );
@@ -246,7 +246,7 @@ gmd(
     aliases: ["logos", "logo", "logohelp", "logomenu"],
     category: "logo",
     react: "📜",
-    description: "Show all available logo commands",
+    description: "Mostrar todos os comandos de logo disponíveis",
   },
   async (from, Gifted, conText) => {
     const { mek, reply, react, botCaption, botName, botPrefix } = conText;
@@ -256,7 +256,7 @@ gmd(
       .join("\n");
 
     await reply(
-      `🎨 *${botName} LOGO MAKER*\n\n${logoList}\n\n📝 *Usage:* ${botPrefix}commandname <your text>\n📌 *Example:* ${botPrefix}glossysilver Immu Tech\n\n> ${botCaption}`,
+      `🎨 *${botName} CRIADOR DE LOGOS*\n\n${logoList}\n\n📝 *Uso:* ${botPrefix}nomedo_comando <seu texto>\n📌 *Exemplo:* ${botPrefix}glossysilver Immu Tech\n\n> ${botCaption}`,
     );
     await react("✅");
   },
